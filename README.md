@@ -7,7 +7,7 @@ Good Bad Movie community Site
 ### Trello Board: [WDI Project 4](https://trello.com/b/af738Bnd/project-caged-movies)
 ### Technologies Used:
 
-Javascript, HTML, Css. Built with React on Rails stack
+Ruby, Javascript, HTML, Css. Built with React on Rails stack
 ---
 #### Goal (v1): 
 

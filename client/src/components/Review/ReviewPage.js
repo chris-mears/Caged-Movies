@@ -65,7 +65,7 @@ class ReviewPage extends Component {
                     <Info>
                         <div>{this.state.review.movie.title}</div>
                         <div><p>{this.state.review.movie.tag_line}...</p></div>
-                        <div>Rating: {this.state.review.movie.rating}</div>
+                        <div>Rating: {this.state.review.movie.rating}/10</div>
                     </Info>
                 </MovieInfo>
                 <ReviewBody>

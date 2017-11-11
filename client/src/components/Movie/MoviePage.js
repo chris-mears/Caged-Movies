@@ -65,7 +65,7 @@ class MoviePage extends Component {
                     <Info>
                         <div>{this.state.movie.title}</div>
                         <div><p>{this.state.movie.tag_line}...</p></div>
-                        <div>Rating: {this.state.movie.rating}</div>
+                        <div>Rating: {this.state.movie.rating}/10</div>
                         <div><h5>Overview</h5><p>{this.state.movie.plot}</p></div>
                         </Info>
                 </MovieInfo>

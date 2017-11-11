@@ -2,7 +2,7 @@ class Api::MoviesController < ApplicationController
 
   #Index method for Movies
   def index
-    @movies = Movie.all
+    @movies = Movie.order('likes Desc').all
     render json: @movies
   end
 

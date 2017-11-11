@@ -1,14 +1,18 @@
 import React, {Component} from 'react'
-import {Route, BrowserRouter as Router, Switch, Redirect} from 'react-router-dom'
-import SignUpLogIn from './components/user/SignUpLogIn'
+import {Route, BrowserRouter as Router, Switch} from 'react-router-dom'
 import axios from 'axios'
 import {clearAuthTokens, saveAuthTokens, setAxiosDefaults, userIsLoggedIn} from "./util/SessionHeaderUtil"
+
+import SignUpLogIn from './components/user/SignUpLogIn'
+import Header from './components/Main/Header'
+import MainPage from './components/Main/MainPage'
 
 
 class App extends Component {
 
     state = {
-        signedIn: false
+        signedIn: false,
+        toggleSignIn: false
     }
 
     async componentWillMount() {
@@ -74,23 +78,40 @@ class App extends Component {
       }
   }
 
-    render() {
+  handleLogInClick = () => {
+      this.setState({toggleSignIn: true})
+  }
 
-        const SignUpLogInComponent = () => (
+  handleLogoClick = () => {
+      this.setState({toggleSignIn: false})
+  }
+
+    render() {
+        const SignUpSignIn = () => (
             <SignUpLogIn
-                signUp={this.signUp}
-                signIn={this.signIn}/>
+            signUp={this.signUp}
+            signIn={this.signIn} />
+        )
+
+        const HomePageComponent = () => (
+            <MainPage
+            signedIn={this.state.signedIn}
+            toggleSignIn={this.state.toggleSignIn} />
         )
 
         return (
             <Router>
                 <div>
-                <button onClick={this.signOut}>Sign Out</button>
+                <Header signOut={this.signOut} 
+                signedIn={this.state.signedIn} 
+                handleLogInClick={this.handleLogInClick}
+                handleLogoClick={this.handleLogoClick} />
+                 
                     <Switch>
-                        <Route exact path="/signUp" render={SignUpLogInComponent}/>
+                        <Route exact path='/' render={HomePageComponent} />
+                        <Route exact path='/signup' render={SignUpSignIn} />
                     </Switch>
 
-                    {this.state.signedIn ? null : <Redirect to="/signUp"/>}
                 </div>
             </Router>
         )

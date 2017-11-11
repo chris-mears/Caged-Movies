@@ -31,6 +31,15 @@ const Title = styled.div`
     text-align: center;
 `
 
+const ReviewBody = styled.div`
+    margin: 60px;
+    border: 1px solid #30415D;
+    padding: 20px;
+    p {
+        font-size: 1.4em;
+    }
+`
+
 class ReviewPage extends Component {
     state = {
         review: {
@@ -59,6 +68,9 @@ class ReviewPage extends Component {
                         <div>Rating: {this.state.review.movie.rating}</div>
                     </Info>
                 </MovieInfo>
+                <ReviewBody>
+                    <p>{this.state.review.body}</p>
+                </ReviewBody>
             </div>
         );
     }

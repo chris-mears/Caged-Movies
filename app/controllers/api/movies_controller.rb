@@ -8,7 +8,7 @@ class Api::MoviesController < ApplicationController
 
   def show
     @movie = Movie.find_by_id(params[:id])
-    render json: @movie
+    render json: @movie, include: [:reviews]
   end
 
   def update

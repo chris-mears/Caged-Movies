@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 import { FlexRow } from '../StyledComponents/FlexContainers'
 
@@ -30,9 +31,18 @@ const ReviewList = styled.div`
     margin: 20px;
 `
 
+const Review = styled.div`
+    border: 1px solid #30415D;
+    margin: 20px;
+    font-size: 1.6em;
+    padding: 20px 60px;
+`
+
 class MoviePage extends Component {
     state = {
-        movie: {}
+        movie: {
+            reviews: [],
+        }
     }
 
     componentWillMount() {
@@ -45,6 +55,9 @@ class MoviePage extends Component {
         this.setState({movie: res.data})
     }
     render() {
+        const reviews = this.state.movie.reviews.map((review) => {
+            return <Review><Link to={`/review/${review.id}`}>{review.title}</Link></Review>
+        })
         return (
             <div>
                 <MovieInfo>
@@ -58,6 +71,7 @@ class MoviePage extends Component {
                 </MovieInfo>
                 <ReviewList>
                     <h2>Reviews:</h2>
+                    {reviews}
                 </ReviewList>
             </div>
         );

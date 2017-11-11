@@ -7,6 +7,7 @@ import SignUpLogIn from './components/user/SignUpLogIn'
 import Header from './components/Main/Header'
 import MainPage from './components/Main/MainPage'
 import MoviePage from './components/Movie/MoviePage'
+import ReviewPage from './components/Review/ReviewPage'
 
 
 class App extends Component {
@@ -112,6 +113,7 @@ class App extends Component {
                         <Route exact path='/' render={HomePageComponent} />
                         <Route exact path='/signup' render={SignUpSignIn} />
                         <Route exact path='/movie/:movieName' component={MoviePage} />
+                        <Route exact path='/review/:reviewId' component={ReviewPage} />
                     </Switch>
 
                 </div>

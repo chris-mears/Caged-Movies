@@ -11,3 +11,8 @@ export const FlexRowCenter = styled.div `
     justify-content: center;
     align-items: center;
 `
+
+export const FlexRow = styled.div `
+    display: flex;
+    align-items: center;
+`

@@ -1,11 +1,19 @@
 import React, {Component} from 'react'
+import { Redirect } from 'react-router-dom'
+import { Button } from '../StyledComponents/Button'
+
+const SignInButton = Button.extend `
+    background: #CF6766;
+    color: #031424;    
+`
 
 class SignUpLogIn extends Component {
 
     state = {
         email: '',
         password: '',
-        password_confirmation: ''
+        password_confirmation: '',
+        toggleRedirect: false
     }
 
     signUp = (event) => {
@@ -15,6 +23,7 @@ class SignUpLogIn extends Component {
             this.state.password,
             this.state.password_confirmation
         )
+        this.handleRedirect
     }
 
     signIn = (event) => {
@@ -23,6 +32,7 @@ class SignUpLogIn extends Component {
             this.state.email,
             this.state.password
         )
+        this.handleRedirect
     }
 
     handleChange = (event) => {
@@ -32,6 +42,9 @@ class SignUpLogIn extends Component {
     }
 
     render() {
+        if (this.props.toggleRedirect) {
+            return <Redirect to='/' />
+        } 
         return (
             <div>
                 <form>
@@ -49,8 +62,8 @@ class SignUpLogIn extends Component {
                                value={this.state.password_confirmation}/>
                     </div>
 
-                    <button onClick={this.signUp}>Sign Up</button>
-                    <button onClick={this.signIn}>Log In</button>
+                    <SignInButton onClick={this.signUp}>Sign Up</SignInButton>
+                    <SignInButton onClick={this.signIn}>Log In</SignInButton>
                 </form>
             </div>
         )

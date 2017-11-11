@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Route, BrowserRouter as Router, Switch} from 'react-router-dom'
+import {Route, BrowserRouter as Router, Switch, Redirect} from 'react-router-dom'
 import axios from 'axios'
 import {clearAuthTokens, saveAuthTokens, setAxiosDefaults, userIsLoggedIn} from "./util/SessionHeaderUtil"
 
@@ -12,7 +12,8 @@ class App extends Component {
 
     state = {
         signedIn: false,
-        toggleSignIn: false
+        toggleSignIn: false,
+        toggleRedirect: false,
     }
 
     async componentWillMount() {
@@ -41,8 +42,7 @@ class App extends Component {
             const response = await axios.post('/auth', payload)
             saveAuthTokens(response.headers)
 
-            this.setState({signedIn: true})
-
+            this.setState({signedIn: true, toggleRedirect: true, toggleSignIn: false})
         } catch (error) {
             console.log(error)
         }
@@ -57,8 +57,7 @@ class App extends Component {
             const response = await axios.post('/auth/sign_in', payload)
             saveAuthTokens(response.headers)
 
-            this.setState({signedIn: true})
-
+            this.setState({signedIn: true, toggleRedirect: true, toggleSignIn: false})
         } catch (error) {
             console.log(error)
         }
@@ -72,7 +71,7 @@ class App extends Component {
   
           clearAuthTokens();
   
-          this.setState({signedIn: false})
+          this.setState({signedIn: false, toggleRedirect: false, toggleSignIn: false})
       } catch(error) {
           console.log(error)
       }
@@ -90,7 +89,8 @@ class App extends Component {
         const SignUpSignIn = () => (
             <SignUpLogIn
             signUp={this.signUp}
-            signIn={this.signIn} />
+            signIn={this.signIn} 
+            toggleRedirect={this.state.toggleRedirect}/>
         )
 
         const HomePageComponent = () => (

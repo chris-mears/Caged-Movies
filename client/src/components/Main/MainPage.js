@@ -7,7 +7,8 @@ import { FlexRowCenter } from '../StyledComponents/FlexContainers'
 const HeroUserContainer = FlexRowCenter.extend `
     width: 100%;
     height: 35vh;
-    background: grey;
+    color: #cf6766;
+    background: #30415D;
     margin-top: 15px;
 `
 

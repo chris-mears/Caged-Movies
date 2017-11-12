@@ -27,6 +27,19 @@ const Logo = styled.div `
     a {
         color: #8EAEBD;
         text-decoration: none;
+        div {
+            display: flex;
+            justify-contents: center;
+            align-items: center;
+        }
+        p {
+            margin-left: 5px;
+            font-size: 1.2em;
+            color: white;
+        }
+        img {
+        height: 6vh;
+    }
     }
 `
 
@@ -37,7 +50,11 @@ class Header extends Component {
         return (
             <div>
                 <HeaderContainer>
-                    <Logo onClick={this.props.handleLogoClick}><Link to="/">Logo</Link></Logo>
+                    <Logo onClick={this.props.handleLogoClick}><Link to="/"><div>
+                    <img src="../../../Logo_white.png" alt="caged Movies" />
+                    <p>Caged Movies</p>
+                    </div>
+                    </Link></Logo>
                     <div>
                     {this.props.signedIn ? signOut : signIn}
                     </div>

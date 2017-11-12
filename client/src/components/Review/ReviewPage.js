@@ -3,6 +3,7 @@ import axios from 'axios'
 import styled from 'styled-components'
 
 import { FlexRow } from '../StyledComponents/FlexContainers'
+import { Link } from 'react-router-dom';
 
 
 const MovieInfo = FlexRow.extend `
@@ -43,7 +44,9 @@ const ReviewBody = styled.div`
 class ReviewPage extends Component {
     state = {
         review: {
-            movie: {}
+            movie: {
+                title: ''
+            }
         }
     }
 
@@ -57,13 +60,21 @@ class ReviewPage extends Component {
         this.setState({review: res.data})
     }
     render() {
+        const movieUrl = this.state.review.movie.title
+        .replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, '')
+        .split(' ')
+        .join('-')
+        .toLowerCase()
         return (
             <div>
                 <Title><h1>{this.state.review.title}</h1></Title>
                 <MovieInfo>
                     <img src={this.state.review.movie.poster} alt={this.state.review.movie.title} />
                     <Info>
-                        <div>{this.state.review.movie.title}</div>
+                        <div><Link to={{pathname: `/movie/${movieUrl}`, state:{
+                            id: this.state.review.movie.id,
+                            signedIn: this.props.location.state.signedIn} }}>
+                        {this.state.review.movie.title}</Link></div>
                         <div><p>{this.state.review.movie.tag_line}...</p></div>
                         <div>Rating: {this.state.review.movie.rating}/10</div>
                     </Info>

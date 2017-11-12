@@ -9,6 +9,7 @@ import MainPage from './components/Main/MainPage'
 import MoviePage from './components/Movie/MoviePage'
 import ReviewPage from './components/Review/ReviewPage'
 import NewReview from './components/Review/NewReview'
+import UpdateReview from './components/Review/UpdateReview'
 
 class App extends Component {
 
@@ -106,6 +107,7 @@ class App extends Component {
                         <Route exact path='/movie/:movieName' component={MoviePage} />
                         <Route exact path='/review/:reviewId' component={ReviewPage} />
                         <Route exact path='/newreview' component={NewReview} />
+                        <Route exact path='/updatereview/:reviewId' component={UpdateReview} />
                     </Switch>
 
                 </div>

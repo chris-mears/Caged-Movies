@@ -70,9 +70,17 @@ class MoviePage extends Component {
 
     render() {
         const reviews = this.state.movie.reviews.map((review) => {
-            return <Review key={review.id}><Link to={`/review/${review.id}`}>{review.title}</Link><div>
+            return <Review key={review.id}>
+            <Link to={{
+                pathname: `/review/${review.id}`, 
+                state: {
+                    signedIn: this.props.location.state.signedIn
+                } 
+            }}>
+            {review.title}</Link><div>
             {this.props.location.state.signedIn ? 
-            <Icon id={review.id} src='../../../icons/SVG/pencil.svg' alt='update' /> : ''} 
+            <Link to={`/updatereview/${review.id}`} >
+            <Icon id={review.id} src='../../../icons/SVG/pencil.svg' alt='update' /></Link> : ''} 
             {this.props.location.state.signedIn ? 
             <Icon id={review.id} src='../../../icons/SVG/bin.svg' alt='delete' onClick={this.handleReviewDelete}/> : ''}
             </div></Review>

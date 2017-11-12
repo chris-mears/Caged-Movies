@@ -160,7 +160,12 @@ class MainPage extends Component {
             .reviews
             .map((review) => {
                 return <Review key={review.id}>
-                    <Link to={`/review/${review.id}`}>{review.title}</Link>
+                    <Link to={{
+                        pathname: `/review/${review.id}`, 
+                        state: {
+                            signedIn: this.props.signedIn
+                        } 
+                    }}>{review.title}</Link>
                 </Review>
             })
 

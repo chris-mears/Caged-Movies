@@ -1,5 +1,5 @@
 class Api::ReviewsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :except => [:index, :show]
 
   def index
     @reviews = Review.includes(:movie).order('created_at Desc').all

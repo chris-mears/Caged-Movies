@@ -25,6 +25,18 @@ the_room = Movie.create!(
   genre: "Drama"
 )
 
+panic_room = Movie.create!(
+  title: "Panic Room",
+  plot: "Trapped in their New York brownstone's panic room, a hidden chamber built as a sanctuary in the event of break-ins, newly divorced Meg Altman and her young daughter Sarah play a deadly game of cat-and-mouse with three intruders - Burnham, Raoul and Junior - during a brutal home invasion. But the room itself is the focal point because what the intruders really want is inside it.",
+  poster: "https://image.tmdb.org/t/p/original/hjkugMBhYjV8ZXgvSnGXI3q7wt7.jpg",
+  rating: 6.6,
+  likes: 1,
+  api_id: 4547,
+  imdb_id: "tt0258000",
+  tag_line: "",
+  genre: "Drama"
+)
+
 street_fighter = Movie.create!(
   title: "Street Fighter",
   plot: "Col. Guile and various other martial arts heroes fight against the tyranny of Dictator M. Bison and his cohorts.",

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 import styled from 'styled-components'
+import { Redirect } from 'react-router-dom'
 
 import { FlexRow } from '../StyledComponents/FlexContainers'
 import { Link } from 'react-router-dom';
@@ -28,17 +29,24 @@ const Info = styled.div`
     }
 `
 
+const Icon = styled.img`
+margin: 0 20px;
+`
+
 const Title = styled.div`
     text-align: center;
 `
 
 const ReviewBody = styled.div`
-    margin: 60px;
+    margin: 40px;
     border: 1px solid #30415D;
     padding: 20px;
     p {
         font-size: 1.4em;
     }
+`
+const ReviewOptions = styled.div`
+    margin: 30px 0 0 80px;
 `
 
 class ReviewPage extends Component {
@@ -47,7 +55,8 @@ class ReviewPage extends Component {
             movie: {
                 title: ''
             }
-        }
+        },
+        toggleRedirect: false
     }
 
     componentWillMount() {
@@ -59,7 +68,17 @@ class ReviewPage extends Component {
         const res = await axios.get(`/api/reviews/${reviewId}`)
         this.setState({review: res.data})
     }
+
+    handleReviewDelete = async (event) => {
+        const reviewId = event.target.id
+        await axios.delete(`/api/reviews/${reviewId}`)
+        this.setState({toggleRedirect: true})
+    }
+
     render() {
+        if(this.state.toggleRedirect) {
+            return <Redirect to='/' />
+        }
         const movieUrl = this.state.review.movie.title
         .replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, '')
         .split(' ')
@@ -71,14 +90,19 @@ class ReviewPage extends Component {
                 <MovieInfo>
                     <img src={this.state.review.movie.poster} alt={this.state.review.movie.title} />
                     <Info>
-                        <div><Link to={{pathname: `/movie/${movieUrl}`, state:{
-                            id: this.state.review.movie.id,
-                            signedIn: this.props.location.state.signedIn} }}>
+                        <div><Link to={`/movie/${this.state.review.movie.id}/${movieUrl}`}>
                         {this.state.review.movie.title}</Link></div>
                         <div><p>{this.state.review.movie.tag_line}...</p></div>
                         <div>Rating: {this.state.review.movie.rating}/10</div>
                     </Info>
-                </MovieInfo>
+                </MovieInfo> 
+            <ReviewOptions>
+            {this.props.signedIn ?
+            <Link to={`/updatereview/${this.state.review.id}`} >
+            <Icon id={this.state.review.id} src='../../../icons/SVG/pencil.svg' alt='update' /></Link> : ''} 
+            {this.props.signedIn ? 
+            <Icon id={this.state.review.id} src='../../../icons/SVG/bin.svg' alt='delete' onClick={this.handleReviewDelete}/> : ''}
+            </ReviewOptions>   
                 <ReviewBody>
                     <p>{this.state.review.body}</p>
                 </ReviewBody>

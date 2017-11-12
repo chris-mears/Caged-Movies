@@ -92,7 +92,7 @@ class App extends Component {
             <MainPage
             signedIn={this.state.signedIn} />
         )
-
+        
 
         return (
             <Router>
@@ -104,8 +104,8 @@ class App extends Component {
                     <Switch>
                         <Route exact path='/' render={HomePageComponent} />
                         <Route exact path='/signup' render={SignUpSignIn} />
-                        <Route exact path='/movie/:movieName' component={MoviePage} />
-                        <Route exact path='/review/:reviewId' component={ReviewPage} />
+                        <Route exact path='/movie/:movieId/:movieName' render={(props) => <MoviePage signedIn={this.state.signedIn} {...props} />} />
+                        <Route exact path='/review/:reviewId' render={(props) => <ReviewPage signedIn={this.state.signedIn} {...props} />} />
                         <Route exact path='/newreview' component={NewReview} />
                         <Route exact path='/updatereview/:reviewId' component={UpdateReview} />
                     </Switch>

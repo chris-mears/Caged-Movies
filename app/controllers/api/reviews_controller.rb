@@ -2,7 +2,7 @@ class Api::ReviewsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @reviews = Review.includes(:movie).all
+    @reviews = Review.includes(:movie).order('created_at Desc').all
     render json: @reviews, include: [:movie]
   end
 

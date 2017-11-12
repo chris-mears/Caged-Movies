@@ -54,10 +54,11 @@ class MoviePage extends Component {
 
     componentWillMount() {
         this.getMovie()
+        console.log(this.props.signedIn)
     }
 
     getMovie = async () => {
-        const movieId = this.props.location.state.id
+        const { movieId } = this.props.match.params
         const res = await axios.get(`/api/movies/${movieId}`)
         this.setState({movie: res.data})
     }
@@ -71,17 +72,12 @@ class MoviePage extends Component {
     render() {
         const reviews = this.state.movie.reviews.map((review) => {
             return <Review key={review.id}>
-            <Link to={{
-                pathname: `/review/${review.id}`, 
-                state: {
-                    signedIn: this.props.location.state.signedIn
-                } 
-            }}>
+            <Link to={`/review/${review.id}`}>
             {review.title}</Link><div>
-            {this.props.location.state.signedIn ? 
+            {this.props.signedIn ? 
             <Link to={`/updatereview/${review.id}`} >
             <Icon id={review.id} src='../../../icons/SVG/pencil.svg' alt='update' /></Link> : ''} 
-            {this.props.location.state.signedIn ? 
+            {this.props.signedIn ? 
             <Icon id={review.id} src='../../../icons/SVG/bin.svg' alt='delete' onClick={this.handleReviewDelete}/> : ''}
             </div></Review>
         })
@@ -95,7 +91,7 @@ class MoviePage extends Component {
                         <div>Rating: {this.state.movie.rating}/10</div>
                         <div><h5>Overview</h5><p>{this.state.movie.plot}</p></div>
                     </Info>
-                    {this.props.location.state.signedIn ? 
+                    {this.props.signedIn ? 
                     <Link to={{ pathname: '/newReview', state:{id: this.state.movie.id}}}><AddReview>AddReview</AddReview></Link> : ''}
                 </MovieInfo>
                 <ReviewList>

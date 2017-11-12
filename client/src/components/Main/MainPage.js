@@ -145,13 +145,7 @@ class MainPage extends Component {
                 const movieIndex = String(index + 1)
                 return <Movie key={movie.id}>
                     <Link
-                        to={{
-                        pathname: `/movie/${MovieUrl}`,
-                        state: {
-                            id: movie.id,
-                            signedIn: this.props.signedIn
-                        }
-                    }}>{movieIndex}. {movie.title}</Link>
+                        to={`/movie/${movie.id}/${MovieUrl}`}>{movieIndex}. {movie.title}</Link>
                 </Movie>
             })
 
@@ -160,12 +154,7 @@ class MainPage extends Component {
             .reviews
             .map((review) => {
                 return <Review key={review.id}>
-                    <Link to={{
-                        pathname: `/review/${review.id}`, 
-                        state: {
-                            signedIn: this.props.signedIn
-                        } 
-                    }}>{review.title}</Link>
+                    <Link to={`/review/${review.id}`}>{review.title}</Link>
                 </Review>
             })
 

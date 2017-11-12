@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Redirect, Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 import styled from 'styled-components'
 import {FlexRowCenter} from '../StyledComponents/FlexContainers'
@@ -13,7 +13,6 @@ const HeroUserContainer = FlexRowCenter.extend `
 `
 const WelcomeContainer = styled.div `
     text-align: center;
-    border: 3px solid #30415D;
     margin: 20px;
     padding: 20px;
     p {
@@ -86,6 +85,20 @@ a {
     }
 `
 
+const Cage = FlexRowCenter.extend`
+    background: url('../../../trolls_two.png');
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    font-size: 3em;
+    color: white;
+    img {
+        height: 80%;
+    }
+`
+
 class MainPage extends Component {
     state = {
         movies: [],
@@ -108,9 +121,6 @@ class MainPage extends Component {
     }
 
     render() {
-        if (this.props.toggleSignIn) {
-            return <Redirect to="/signup"/>
-        }
 
         const welcome = <WelcomeContainer>
             <h1>Welcome to Caged Movies</h1>
@@ -138,7 +148,8 @@ class MainPage extends Component {
                         to={{
                         pathname: `/movie/${MovieUrl}`,
                         state: {
-                            id: movie.id
+                            id: movie.id,
+                            signedIn: this.props.signedIn
                         }
                     }}>{movieIndex}. {movie.title}</Link>
                 </Movie>
@@ -152,12 +163,17 @@ class MainPage extends Component {
                     <Link to={`/review/${review.id}`}>{review.title}</Link>
                 </Review>
             })
+
+        const HeroBanner = <Cage>
+            {/* <img src='../../../Logo_white.png' alt='caged movies' /> */}
+            For those movies, so bad you hate to love them!
+        </Cage>
         return (
             <div>
                 <HeroUserContainer>
                     {this.props.signedIn
                         ? <h1>UserInfo</h1>
-                        : <h1>HeroBanner</h1>}
+                        : HeroBanner}
                 </HeroUserContainer>
 
                 {this.props.signedIn

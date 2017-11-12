@@ -12,8 +12,7 @@ class SignUpLogIn extends Component {
     state = {
         email: '',
         password: '',
-        password_confirmation: '',
-        toggleRedirect: false
+        password_confirmation: ''
     }
 
     signUp = (event) => {
@@ -23,7 +22,6 @@ class SignUpLogIn extends Component {
             this.state.password,
             this.state.password_confirmation
         )
-        this.handleRedirect
     }
 
     signIn = (event) => {
@@ -32,7 +30,6 @@ class SignUpLogIn extends Component {
             this.state.email,
             this.state.password
         )
-        this.handleRedirect
     }
 
     handleChange = (event) => {

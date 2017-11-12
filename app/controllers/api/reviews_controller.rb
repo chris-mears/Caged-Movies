@@ -1,4 +1,5 @@
 class Api::ReviewsController < ApplicationController
+  before_action :authenticate_user!
 
   def index
     @reviews = Review.includes(:movie).all
@@ -11,8 +12,11 @@ class Api::ReviewsController < ApplicationController
   end
 
   def create
-    @review = Review.create!(review_params)
-    render json: @review, include: [:movie]
+    @user = current_user
+    @review = @user.reviews.build(review_params)
+    if @user.save
+      render json: @review
+    end
   end
 
   def update
@@ -29,6 +33,6 @@ class Api::ReviewsController < ApplicationController
   private
 
   def review_params
-    params.require(:review).permit(:title, :body, :likes, :genre, :user_id, :movie_id)
+    params.require(:review).permit(:title, :body, :likes, :genre, :movie_id)
   end
 end

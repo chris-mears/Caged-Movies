@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Route, BrowserRouter as Router, Switch, Redirect} from 'react-router-dom'
+import {Route, BrowserRouter as Router, Switch} from 'react-router-dom'
 import axios from 'axios'
 import {clearAuthTokens, saveAuthTokens, setAxiosDefaults, userIsLoggedIn} from "./util/SessionHeaderUtil"
 
@@ -8,13 +8,12 @@ import Header from './components/Main/Header'
 import MainPage from './components/Main/MainPage'
 import MoviePage from './components/Movie/MoviePage'
 import ReviewPage from './components/Review/ReviewPage'
-
+import NewReview from './components/Review/NewReview'
 
 class App extends Component {
 
     state = {
         signedIn: false,
-        toggleSignIn: false,
         toggleRedirect: false,
     }
 
@@ -44,7 +43,7 @@ class App extends Component {
             const response = await axios.post('/auth', payload)
             saveAuthTokens(response.headers)
 
-            this.setState({signedIn: true, toggleRedirect: true, toggleSignIn: false})
+            this.setState({signedIn: true, toggleRedirect: true})
         } catch (error) {
             console.log(error)
         }
@@ -59,7 +58,7 @@ class App extends Component {
             const response = await axios.post('/auth/sign_in', payload)
             saveAuthTokens(response.headers)
 
-            this.setState({signedIn: true, toggleRedirect: true, toggleSignIn: false})
+            this.setState({signedIn: true, toggleRedirect: true})
         } catch (error) {
             console.log(error)
         }
@@ -73,19 +72,12 @@ class App extends Component {
   
           clearAuthTokens();
   
-          this.setState({signedIn: false, toggleRedirect: false, toggleSignIn: false})
+          this.setState({signedIn: false, toggleRedirect: false})
       } catch(error) {
           console.log(error)
       }
   }
 
-  handleLogInClick = () => {
-      this.setState({toggleSignIn: true})
-  }
-
-  handleLogoClick = () => {
-      this.setState({toggleSignIn: false})
-  }
 
     render() {
         const SignUpSignIn = () => (
@@ -97,23 +89,23 @@ class App extends Component {
 
         const HomePageComponent = () => (
             <MainPage
-            signedIn={this.state.signedIn}
-            toggleSignIn={this.state.toggleSignIn} />
+            signedIn={this.state.signedIn} />
         )
+
 
         return (
             <Router>
                 <div>
                 <Header signOut={this.signOut} 
                 signedIn={this.state.signedIn} 
-                handleLogInClick={this.handleLogInClick}
-                handleLogoClick={this.handleLogoClick} />
-                 
+                handleLogoClick={this.handleLogoClick}
+                toggleSignIn={this.state.toggleSignIn} />
                     <Switch>
                         <Route exact path='/' render={HomePageComponent} />
                         <Route exact path='/signup' render={SignUpSignIn} />
                         <Route exact path='/movie/:movieName' component={MoviePage} />
                         <Route exact path='/review/:reviewId' component={ReviewPage} />
+                        <Route exact path='/newreview' component={NewReview} />
                     </Switch>
 
                 </div>

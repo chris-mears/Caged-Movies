@@ -5,6 +5,11 @@ export const FlexRowBetween = styled.div `
     justify-content: space-between;
     align-items: center;
 `
+export const FlexRowAround = styled.div`
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+`
 
 export const FlexRowCenter = styled.div `
     display: flex;

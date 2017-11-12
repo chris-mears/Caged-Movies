@@ -38,14 +38,14 @@ const Logo = styled.div `
             color: white;
         }
         img {
-        height: 6vh;
+        height: 50px;
     }
     }
 `
 
 class Header extends Component {
     render() {
-        const signIn = <HeaderButton onClick={this.props.handleLogInClick}>LogIn</HeaderButton>
+        const signIn = <Link to='/signup'><HeaderButton>LogIn</HeaderButton></Link>
         const signOut = <HeaderButton onClick={this.props.signOut}>Sign Out</HeaderButton>
         return (
             <div>

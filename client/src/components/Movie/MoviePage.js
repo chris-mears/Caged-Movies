@@ -11,7 +11,6 @@ width: 100%;
 height:50vh;
 color: white;
 background: #30415D;
-margin-top: 15px;
 img {
     height: 90%;
     margin: 10px 40px;

@@ -9,7 +9,6 @@ const HeroUserContainer = FlexRowCenter.extend `
     height: 35vh;
     color: #cf6766;
     background: #30415D;
-    margin-top: 15px;
 `
 const WelcomeContainer = styled.div `
     text-align: center;

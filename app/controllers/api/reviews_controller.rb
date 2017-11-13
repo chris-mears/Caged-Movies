@@ -1,9 +1,19 @@
 class Api::ReviewsController < ApplicationController
-  before_action :authenticate_user!, :except => [:index, :show]
+  before_action :authenticate_user!, :except => [:index, :show, :search]
 
   def index
     @reviews = Review.includes(:movie).order('created_at Desc').all
     render json: @reviews, include: [:movie]
+  end
+
+  def search
+    @movies = Movie.includes(:reviews).where("title ILIKE ?", "%#{params[:title]}%")
+    @reviews = []
+    @movies.each do |movie|
+      @reviews << movie.reviews
+    end
+    @reviews.flatten!
+    render json: { movies: @movies, reviews: @reviews }
   end
 
   def show

@@ -63,7 +63,8 @@ class NewReview extends Component {
         movie: {},
         newReview: {
             title: '',
-            body: ''
+            body: '',
+            likes: 0
         },
         toggleRedirect: false,
         reviewId: '',
@@ -95,6 +96,8 @@ class NewReview extends Component {
         const payload = {
             title: this.state.newReview.title,
             body:  this.state.newReview.body,
+            likes: this.state.newReview.likes,
+            genre: this.state.movie.genre,
             movie_id: this.state.movie.id
         }
         try {

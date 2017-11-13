@@ -52,12 +52,17 @@ class MoviePage extends Component {
     }
 
     componentWillMount() {
-        this.getMovie()
-        console.log(this.state.movie.reviews.length)
+        const { movieId } = this.props.match.params
+        this.getMovie(movieId)
     }
 
-    getMovie = async () => {
-        const { movieId } = this.props.match.params
+    componentWillReceiveProps(newProps) {
+        const { movieId } = newProps.match.params
+        console.log(movieId)
+        this.getMovie(movieId)
+    }
+
+    getMovie = async (movieId) => {
         const res = await axios.get(`/api/movies/${movieId}`)
         this.setState({movie: res.data})
     }

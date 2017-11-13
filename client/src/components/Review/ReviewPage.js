@@ -60,11 +60,16 @@ class ReviewPage extends Component {
     }
 
     componentWillMount() {
-        this.getReview()
+        const { reviewId } = this.props.match.params
+        this.getReview(reviewId)
     }
 
-    getReview = async () => {
-        const { reviewId } = this.props.match.params
+    componentWillReceiveProps(newProps) {
+        const { reviewId } = newProps.match.params
+        this.getReview(reviewId)
+    }
+
+    getReview = async (reviewId) => {
         const res = await axios.get(`/api/reviews/${reviewId}`)
         this.setState({review: res.data})
     }

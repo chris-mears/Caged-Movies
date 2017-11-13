@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import styled from 'styled-components'
 import axios from 'axios'
+import { Link, Redirect } from 'react-router-dom'
 import {FlexRow, FlexRowCenter, FlexColumn} from '../StyledComponents/FlexContainers'
 import {Button} from '../StyledComponents/Button'
 
@@ -89,6 +90,35 @@ const ResultsContainer = styled.div`
     width: 75vw;
 
 `
+const Movie = FlexRow.extend`
+    border: 1px solid white;
+    margin: 10px 0;
+    img {
+        height: 80px;
+        margin-right: 10px;
+    }
+    h4, p {
+        margin: 5px;
+    }
+`
+
+const Review = styled.div`
+    border: 1px solid white;
+    margin: 10px 0;
+    h4, p {
+        margin: 5px;
+    }
+`
+
+const Title = styled.div`
+    h2 {
+        margin: 0;
+        text-decoration: underline;
+    }
+    h5 {
+        margin: 0;
+    }
+`
 
 class SearchComponent extends Component {
     state = {
@@ -113,9 +143,18 @@ class SearchComponent extends Component {
     handleCancel = () => {
         this.setState({
             toggleSearch: !this.state.toggleSearch,
-            searchInput: ''
+            searchInput: '',
+            message: '',
+            toggleMovies: true,
+            toggleReviews: false,
+            toggleGenre: false,
+            results: {
+                movies: [],
+                reviews: []
+            }
         })
     }
+
 
     handleChange = (event) => {
         this.setState({searchInput: event.target.value})
@@ -139,7 +178,7 @@ class SearchComponent extends Component {
         if(res.data.movies === undefined) {
             this.setState({message: res.data.msg})
         } else {
-            const results = {movies: res.data.movies, reviews: ''}
+            const results = {movies: res.data.movies, reviews: res.data.reviews}
             this.setState({results})
         }
     }
@@ -182,32 +221,60 @@ class SearchComponent extends Component {
     }
 
     render() {
-
-        const Title = <div>
+        const titleView = <Title>
             <h2>
                 {this.state.toggleMovies ? 'Movies Search:' : ''}
                 {this.state.toggleReviews ? 'Reviews Search:' : ''}
                 {this.state.toggleGenre ? 'Genre Search:' : ''}
             </h2>
-        </div>
+            <h5>{this.state.toggleGenre ? 'Type in a Genre and hit enter to search.' : ''}</h5>
+        </Title>
         const message = <div><h3>{this.state.message}</h3></div>
-        const movies = <div><h3>Movies:</h3>
-            {this.state.results.movies.map((movie)=> {
+        let movies = ''
+        if (this.state.results.movies.length !==0) {
+            movies = <div><h3>Movies:</h3>
+            <div>{this.state.results.movies.map((movie)=> {
+                const MovieUrl = movie.title
+                .replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, '')
+                .split(' ')
+                .join('-')
+                .toLowerCase()
                 return (
-                    <div key={movie.id}>{movie.title}</div>
+                    <Movie key={movie.id}>
+                    <img src={movie.poster} alt={movie.title} />
+                    <div>
+                        <h4><Link to={`/movie/${movie.id}/${MovieUrl}`} onClick={this.handleCancel}>{movie.title}</Link></h4>
+                        <p>{movie.tag_line}</p>
+                    </div>
+                    </Movie>
                 )
-            })}
-        </div>
-        let review = ''
-        if (this.state.results.reviews.length !== 0) {
-            review = <div><h3>Reviews:</h3>
-            {this.state.results.reviews.map((review)=> {
-                return (
-                    <div key={review.id}>{review.title}</div>
-                )
-            })}
+            })}</div>
             </div>
         }
+        let reviews = ''
+        if (this.state.results.reviews.length !== 0) {
+            reviews = <div><h3>Reviews:</h3>
+            {this.state.results.reviews.map((review)=> {
+                const summary = review.body.substring(0, 200) + '...'
+                return (
+                    <Review key={review.id}>
+                    <h4><Link to={`/review/${review.id}`} onClick={this.handleCancel}>{review.title}</Link></h4>
+                    <p>{summary}</p>
+                    </Review>
+                )
+            })}</div>
+        }
+        let results = ''
+        if(this.state.toggleMovies) {
+            results = <div>{movies}</div>
+        } 
+        else if (this.state.toggleReviews) {
+            results = <div>{reviews}{movies}</div>
+        }
+        else if (this.state.toggleGenre) {
+            results = <div><div>{movies}</div><div>{reviews}</div></div>
+        }
+        
 
         const fullScreenSearch = <FullScreen onKeyPress={this.handleKeyPress}>
             <ActiveSearchDiv>
@@ -230,10 +297,9 @@ class SearchComponent extends Component {
                     <OptionButton onClick={this.toggleGenreSearch}>Genres</OptionButton>
                 </SearchOptions>
                 <ResultsContainer>
-                    {Title}
+                    {titleView}
                     {this.state.message !== '' ? message : ''}
-                    {this.state.results.movies.length !== 0 ? movies : ''}
-                    {this.state.results.reviews.length !== 0 ? review : ''}
+                    {results}
                 </ResultsContainer>
             </SearchResults>
         </FullScreen>

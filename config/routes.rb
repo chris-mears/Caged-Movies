@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'tmdb_api_search/index'
+
   mount_devise_token_auth_for 'User', at: 'auth'
 
   namespace :api do
@@ -13,5 +15,7 @@ Rails.application.routes.draw do
     resources :movie_comment, only: [:create, :destroy, :update]
     resources :review_likes, only: [:create, :destroy]
     resources :review_comments, only: [:create, :destroy, :update]
+
+    get "tmdb_movies", to: "tmdb_api_search#index"
   end
 end

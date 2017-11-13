@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     end
     resources :reviews, only: [:create, :destroy, :update, :show, :index] do
       get 'search', on: :collection
+      get 'search_tmdb', on: :collection
     end
     resources :favorite_movies, only: [:create, :destroy, :update]
     resources :movie_comment, only: [:create, :destroy, :update]

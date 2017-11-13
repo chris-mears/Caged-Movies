@@ -14,7 +14,7 @@ class Api::MoviesController < ApplicationController
         render json: {msg: 'Please enter more than three Characters'}
       else
         @movies = Movie.where("title ILIKE ?", "%#{params[:title]}%")
-        render json: @movies
+        render json: {movies: @movies}
       end
     elsif params[:genre]
       if params[:genre] == ''

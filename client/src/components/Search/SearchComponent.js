@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import styled from 'styled-components'
+import axios from 'axios'
 import {FlexRow, FlexRowCenter, FlexColumn} from '../StyledComponents/FlexContainers'
 import {Button} from '../StyledComponents/Button'
 
@@ -96,6 +97,11 @@ class SearchComponent extends Component {
         toggleMovies: true,
         toggleReviews: false,
         toggleGenre: false,
+        results: {
+            movies: [],
+            reviews: []
+        },
+        message: ''
     }
 
     handleClick = () => {
@@ -127,9 +133,83 @@ class SearchComponent extends Component {
         this.setState({toggleMovies: false, toggleReviews: false, toggleGenre: true})
     }
 
+    searchMovies = async () => {
+        const searchInput = this.state.searchInput
+        const res = await axios.get(`/api/movies/search?title=${searchInput}`)
+        if(res.data.movies === undefined) {
+            this.setState({message: res.data.msg})
+        } else {
+            const results = {movies: res.data.movies, reviews: ''}
+            this.setState({results})
+        }
+    }
+
+    searchReviews = async () => {
+        const searchInput = this.state.searchInput
+        const res = await axios.get(`/api/reviews/search?title=${searchInput}`)
+        if(res.data.movies === undefined) {
+            this.setState({message: res.data.msg})
+        } else {
+            const results = {movies: res.data.movies, reviews: res.data.reviews}
+            this.setState({results})
+        }
+    }
+
+    searchGenres = async () => {
+        const searchInput = this.state.searchInput
+        const res = await axios.get(`/api/movies/search?genre=${searchInput}`)
+        if(res.data.movies === undefined) {
+            this.setState({message: res.data.msg})
+        } else {
+            const results = {movies: res.data.movies, reviews: res.data.reviews}
+            this.setState({results})
+        }
+    }
+
+    handleKeyPress = (event) => {
+    if (event.charCode === 13) {
+        event.preventDefault()
+        if (this.state.toggleMovies) {
+            this.searchMovies()
+        } 
+        else if (this.state.toggleReviews) {
+            this.searchReviews()
+        }
+        else if (this.state.toggleGenre) {
+            this.searchGenres()
+        }
+    }
+    }
+
     render() {
 
-        const fullScreenSearch = <FullScreen>
+        const Title = <div>
+            <h2>
+                {this.state.toggleMovies ? 'Movies Search:' : ''}
+                {this.state.toggleReviews ? 'Reviews Search:' : ''}
+                {this.state.toggleGenre ? 'Genre Search:' : ''}
+            </h2>
+        </div>
+        const message = <div><h3>{this.state.message}</h3></div>
+        const movies = <div><h3>Movies:</h3>
+            {this.state.results.movies.map((movie)=> {
+                return (
+                    <div key={movie.id}>{movie.title}</div>
+                )
+            })}
+        </div>
+        let review = ''
+        if (this.state.results.reviews.length !== 0) {
+            review = <div><h3>Reviews:</h3>
+            {this.state.results.reviews.map((review)=> {
+                return (
+                    <div key={review.id}>{review.title}</div>
+                )
+            })}
+            </div>
+        }
+
+        const fullScreenSearch = <FullScreen onKeyPress={this.handleKeyPress}>
             <ActiveSearchDiv>
                 <ActiveIcon src='../../../icons/SVG/search.svg' alt="search"/>
                 <ActiveSearch
@@ -149,7 +229,12 @@ class SearchComponent extends Component {
                     <OptionButton onClick={this.toggleReviewsSearch}>Reviews</OptionButton>
                     <OptionButton onClick={this.toggleGenreSearch}>Genres</OptionButton>
                 </SearchOptions>
-                <ResultsContainer>Results</ResultsContainer>
+                <ResultsContainer>
+                    {Title}
+                    {this.state.message !== '' ? message : ''}
+                    {this.state.results.movies.length !== 0 ? movies : ''}
+                    {this.state.results.reviews.length !== 0 ? review : ''}
+                </ResultsContainer>
             </SearchResults>
         </FullScreen>
 

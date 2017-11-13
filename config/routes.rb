@@ -17,5 +17,6 @@ Rails.application.routes.draw do
     resources :review_comments, only: [:create, :destroy, :update]
 
     get "tmdb_movies", to: "tmdb_api_search#index"
+    get "tmdb_movies/:id", to: "tmdb_api_search#show"
   end
 end

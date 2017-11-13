@@ -55,22 +55,22 @@ margin-right: 100px;
 `
 
 const FullScreen = styled.div `
-position: fixed;
+position: absolute;
 top: 0;
 left: 0;
 width: 100%;
-height: 100%;
 z-index: 10;
 background-color: rgba(254,254,254,0.7);
 `
 const OptionButton = Button.extend`
 `
 
-const SearchResults = FlexRowCenter.extend `
+const SearchResults = styled.div `
+    display: flex;
     margin: 20px 40px;
     border: 3px solid #30415D;
-    height: 85vh;
     padding: 15px;
+    min-height: 85vh;
 `
 
 const SearchOptions = FlexColumn.extend`
@@ -85,8 +85,8 @@ const SearchOptions = FlexColumn.extend`
 const ResultsContainer = styled.div`
     background-color: rgba(3,20,36,0.95);
     padding: 10px;
+    min-height: 85vh;
     color: white;
-    height: 80vh;
     width: 75vw;
 
 `
@@ -131,7 +131,8 @@ class SearchComponent extends Component {
             movies: [],
             reviews: []
         },
-        message: ''
+        message: '',
+        apiResults: []
     }
 
     handleClick = () => {
@@ -180,6 +181,10 @@ class SearchComponent extends Component {
         } else {
             const results = {movies: res.data.movies, reviews: res.data.reviews}
             this.setState({results})
+        }
+        if(searchInput.length > 3) {
+            const apiRes = await axios.get(`/api/tmdb_movies/?title=${searchInput}`)
+            this.setState({apiResults: apiRes.data})
         }
     }
 
@@ -251,6 +256,27 @@ class SearchComponent extends Component {
             })}</div>
             </div>
         }
+        let apiMovies = ''
+        if (this.state.apiResults.length !== 0) {
+            apiMovies = <div><h3>TMDB Movies:</h3>
+            <div>{this.state.apiResults.map((movie)=> {
+                const MovieUrl = movie.title
+                .replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, '')
+                .split(' ')
+                .join('-')
+                .toLowerCase()
+                return (
+                    <Movie key={movie.id}>
+                    <img src={movie.poster} alt={movie.title} />
+                    <div>
+                        <h4>{movie.title}</h4>
+                        <p>{movie.tag_line}</p>
+                    </div>
+                    </Movie>
+                )
+            })}</div>
+            </div>
+        }
         let reviews = ''
         if (this.state.results.reviews.length !== 0) {
             reviews = <div><h3>Reviews:</h3>
@@ -266,7 +292,7 @@ class SearchComponent extends Component {
         }
         let results = ''
         if(this.state.toggleMovies) {
-            results = <div>{movies}</div>
+            results = <div>{movies}{apiMovies}</div>
         } 
         else if (this.state.toggleReviews) {
             results = <div>{reviews}{movies}</div>

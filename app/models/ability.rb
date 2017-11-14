@@ -6,8 +6,12 @@ class Ability
     can :read, Movie
     can :read, Review
 
-    can [:destroy, :update, :create], Review do |review|
+    can [:destroy, :update], Review do |review|
       review.user == user
+    end
+
+    can [:destroy, :update], FavoriteMovie do |favorite|
+      favorite.user == user
     end
   end
 end

@@ -1,6 +1,6 @@
 class Api::FavoriteMoviesController < ApplicationController
   before_action :authenticate_user!
-  load_and_authorize_resource only: [:destroy, :create, :update]
+  # load_and_authorize_resource only: [:destroy, :create, :update]
 
   def create
     @user = current_user
@@ -11,6 +11,6 @@ class Api::FavoriteMoviesController < ApplicationController
   end
 
   def favorite_movie_params
-    params.require(:favorite_movie).permit(:movie_id, :type)
+    params.require(:favorite_movie).permit(:movie_id, :favorite_type)
   end
 end

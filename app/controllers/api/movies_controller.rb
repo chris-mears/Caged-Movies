@@ -4,8 +4,24 @@ class Api::MoviesController < ApplicationController
 
   #Index method for Movies
   def index
+    @user = current_user
+    @favorites = @user.favorite_movies
     @movies = Movie.order('likes Desc').all
-    render json: @movies
+    @results = []
+    @movies.each do |movie|
+      hash =  {
+        title: movie.title,
+        id: movie.id
+      }
+      @favorites.each do |favorite|
+        if favorite.movie_id == movie.id
+          hash[:favorite] = true
+          hash[:favorit_id] = favorite.id
+        end
+      end
+      @results << hash
+    end
+    render json: @results
   end
 
   def search

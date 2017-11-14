@@ -144,8 +144,7 @@ class MainPage extends Component {
                     .toLowerCase()
                 const movieIndex = String(index + 1)
                 return <Movie key={movie.id}>
-                    <Link
-                        to={`/movie/${movie.id}/${MovieUrl}`}>{movieIndex}. {movie.title}</Link>
+                    <Link to={`/movie/${movie.id}/${MovieUrl}`}>{movieIndex}. {movie.title}</Link>
                 </Movie>
             })
 

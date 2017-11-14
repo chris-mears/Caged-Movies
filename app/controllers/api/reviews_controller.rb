@@ -1,5 +1,6 @@
 class Api::ReviewsController < ApplicationController
   before_action :authenticate_user!, :except => [:index, :show, :search]
+  load_and_authorize_resource only: [:destroy, :create, :update]
 
   def index
     @reviews = Review.includes(:movie).order('created_at Desc').all
@@ -30,13 +31,15 @@ class Api::ReviewsController < ApplicationController
   end
 
   def update
+    @user = current_user
     @review = Review.find(params[:id])
     @review.update_attributes(review_params)
     render json: @review, include: [:movie]
   end
 
   def destroy
-    @review = Review.delete(params[:id])
+    @user = current_user
+    @review = Review.find(params[:id]).delete
     render json: { msg: "Delete Successful" }
   end
 

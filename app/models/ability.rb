@@ -3,10 +3,11 @@ class Ability
 
   def initialize(user)
     user ||= User.new # guest user (not logged in)
-    #can :read, Post
+    can :read, Movie
+    can :read, Review
 
-    # can [:destroy], Post do |post|
-    #   post.user == user
-    # end
+    can [:destroy], Review do |review|
+      review.user == user
+    end
   end
 end

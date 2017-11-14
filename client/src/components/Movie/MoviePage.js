@@ -44,11 +44,17 @@ const AddReview = styled.div`
 const Icon = styled.img`
     margin: 0 20px;
 `
+const UserOptions = FlexRow.extend`
+    h5 {
+        margin: 10px 40px;
+    }
+`
 
 class MoviePage extends Component {
     state = {
         movie: {},
         reviews: [],
+        favoriteType: {}
     }
 
     componentWillMount() {
@@ -75,6 +81,16 @@ class MoviePage extends Component {
         const reviewId = event.target.id
         await axios.delete(`/api/reviews/${reviewId}`)
         this.getMovie()
+    }
+
+    handleMovieFavorite = async () => {
+        const payload = {
+            movie_id: this.state.movie.id,
+            type: 1
+        }
+        console.log('started')
+        const res = await axios.post('/api/favorite_movies', payload)
+        console.log('working')
     }
 
     render() {
@@ -107,6 +123,10 @@ class MoviePage extends Component {
                     {this.props.signedIn ? 
                     <Link to={{ pathname: '/newReview', state:{id: this.state.movie.id}}}><AddReview>AddReview</AddReview></Link> : ''}
                 </MovieInfo>
+                <UserOptions>
+                        <button onClick={this.handleMovieFavorite}>Favorite</button>
+                        <h5>Watch List</h5>
+                </UserOptions>
                 <ReviewList>
                     <h2>Reviews:</h2>
                     {reviews}

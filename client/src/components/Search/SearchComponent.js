@@ -4,6 +4,7 @@ import axios from 'axios'
 import { Link, Redirect } from 'react-router-dom'
 import {FlexRow, FlexRowCenter, FlexColumn} from '../StyledComponents/FlexContainers'
 import {Button} from '../StyledComponents/Button'
+import ApiMovie from '../Movie/ApiMovie'
 
 const SearchDiv = FlexRow.extend `
 background-color: #fafafa;
@@ -152,7 +153,8 @@ class SearchComponent extends Component {
             results: {
                 movies: [],
                 reviews: []
-            }
+            },
+            apiResults: []
         })
     }
 
@@ -266,13 +268,10 @@ class SearchComponent extends Component {
                 .join('-')
                 .toLowerCase()
                 return (
-                    <Movie key={movie.id}>
-                    <img src={movie.poster} alt={movie.title} />
-                    <div>
-                        <h4>{movie.title}</h4>
-                        <p>{movie.tag_line}</p>
-                    </div>
-                    </Movie>
+                    <ApiMovie key={movie.id} title={movie.title}
+                    movieId={movie.id}
+                    poster={movie.poster}
+                    signedIN={this.props.signedIn} />
                 )
             })}</div>
             </div>

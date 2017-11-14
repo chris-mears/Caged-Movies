@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import {FlexRowCenter} from '../StyledComponents/FlexContainers'
 
 const HeroUserContainer = FlexRowCenter.extend `
+    padding-top:80px;
     width: 100%;
     height: 35vh;
     color: #cf6766;

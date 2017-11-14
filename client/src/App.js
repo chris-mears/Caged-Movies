@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {Route, BrowserRouter as Router, Switch} from 'react-router-dom'
 import axios from 'axios'
+import styled from 'styled-components'
 import {clearAuthTokens, saveAuthTokens, setAxiosDefaults, userIsLoggedIn} from "./util/SessionHeaderUtil"
 
 import SignUpLogIn from './components/user/SignUpLogIn'
@@ -11,6 +12,13 @@ import ReviewPage from './components/Review/ReviewPage'
 import NewReview from './components/Review/NewReview'
 import UpdateReview from './components/Review/UpdateReview'
 import SearchComponent from './components/Search/SearchComponent'
+
+
+const TopContents = styled.div`
+    width: 100vw;
+    position: fixed;
+    z-index: 10;
+`
 
 class App extends Component {
 
@@ -98,12 +106,14 @@ class App extends Component {
         return (
             <Router>
                 <div>
+                <TopContents>
                 <Header signOut={this.signOut} 
                 signedIn={this.state.signedIn} 
                 handleLogoClick={this.handleLogoClick}
                 toggleSignIn={this.state.toggleSignIn} />
                 <SearchComponent
                 signedIn={this.state.signedIn} />
+                </TopContents>
                     <Switch>
                         <Route exact path='/' render={HomePageComponent} />
                         <Route exact path='/signup' render={SignUpSignIn} />

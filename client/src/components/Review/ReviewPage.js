@@ -34,6 +34,7 @@ margin: 0 20px;
 `
 
 const Title = styled.div`
+    padding-top: 80px;
     text-align: center;
 `
 

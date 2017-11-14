@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios'
 import styled from 'styled-components'
 import { Redirect } from 'react-router-dom'
-import { FlexRow } from '../StyledComponents/FlexContainers'
+import { FlexRow, FlexRowCenter } from '../StyledComponents/FlexContainers'
 
 const ReviewForm = styled.form`
     width: 100vw;
@@ -29,14 +29,13 @@ const TitleInput = styled.input`
 
 const BodyField = styled.textarea`
     width: 95vw;
-    height: 50vh;
+    height: 40vh;
     font-size: 1.6em;
     border: 2px solid #30415D;
     margin: 20px
 `
 
 const SubmitButton = styled.input`
-    margin: 0 50vw;
     background: #CF6766;
     color: #031424;
     font-weight: bolder;
@@ -56,6 +55,12 @@ const SubmitButton = styled.input`
     &:hover {
         background: rgb(198, 165, 103);
     }
+`
+const NewContainer= styled.div`
+    padding-top: 80px;
+`
+
+const ButtonContainer = FlexRowCenter.extend`
 `
 
 class NewReview extends Component {
@@ -115,7 +120,7 @@ class NewReview extends Component {
             return <Redirect to={`/review/${this.state.reviewId}`} />
         }
         return (
-            <div>
+            <NewContainer>
                 <h1>New Review</h1>
                 <ReviewForm onSubmit={this.handleSubmit}>
                 <UpperForm>
@@ -126,9 +131,11 @@ class NewReview extends Component {
                 <img src={this.state.movie.poster} alt={this.state.movie.title} />
                 </UpperForm>
                 <BodyField name='body' placeholder='Your Review' value={this.state.newReview.body} onChange={this.handleChange} />
+                <ButtonContainer>
                 <SubmitButton type='submit' />
+                </ButtonContainer>
                 </ReviewForm>
-            </div>
+            </NewContainer>
         );
     }
 }

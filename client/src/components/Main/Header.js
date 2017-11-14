@@ -48,7 +48,6 @@ class Header extends Component {
         const signIn = <Link to='/signup'><HeaderButton>LogIn</HeaderButton></Link>
         const signOut = <HeaderButton onClick={this.props.signOut}>Sign Out</HeaderButton>
         return (
-            <div>
                 <HeaderContainer>
                     <Logo onClick={this.props.handleLogoClick}><Link to="/"><div>
                     <img src="../../../Logo_white.png" alt="caged Movies" />
@@ -59,7 +58,6 @@ class Header extends Component {
                     {this.props.signedIn ? signOut : signIn}
                     </div>
                 </HeaderContainer>
-            </div>
         );
     }
 }

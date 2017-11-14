@@ -1,10 +1,16 @@
 import React, {Component} from 'react'
 import { Redirect } from 'react-router-dom'
+import styled from 'styled-components'
 import { Button } from '../StyledComponents/Button'
+
 
 const SignInButton = Button.extend `
     background: #CF6766;
     color: #031424;    
+`
+
+const UserPortal = styled.div`
+    padding-top: 80px;
 `
 
 class SignUpLogIn extends Component {
@@ -43,7 +49,7 @@ class SignUpLogIn extends Component {
             return <Redirect to='/' />
         } 
         return (
-            <div>
+            <UserPortal>
                 <form>
                     <div>
                         <label htmlFor="email">E-mail: </label>
@@ -62,7 +68,7 @@ class SignUpLogIn extends Component {
                     <SignInButton onClick={this.signUp}>Sign Up</SignInButton>
                     <SignInButton onClick={this.signIn}>Log In</SignInButton>
                 </form>
-            </div>
+            </UserPortal>
         )
     }
 }

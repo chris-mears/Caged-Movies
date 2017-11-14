@@ -50,7 +50,17 @@ class Api::MoviesController < ApplicationController
       }
       @reviews << hash
     end
-    render json: {movie: @movie, reviews: @reviews}
+    @favorite = FavoriteMovie.where("user_id = ? AND movie_id = ?", @user.id, @movie.id)
+    if @favorite.empty?
+      id = 'null'
+    else
+      id = @favorite[0].id
+    end
+    result = {
+      favorite: !@favorite.empty?,
+      favorite_id: id
+    }
+    render json: {movie: @movie, reviews: @reviews, favorite: result}
   end
 
   def update

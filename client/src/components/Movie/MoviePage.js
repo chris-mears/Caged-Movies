@@ -54,7 +54,9 @@ class MoviePage extends Component {
     state = {
         movie: {},
         reviews: [],
-        favoriteType: {}
+        favorite: {
+            favorite: false,
+        }
     }
 
     componentWillMount() {
@@ -71,7 +73,7 @@ class MoviePage extends Component {
     getMovie = async (movieId) => {
         try {
             const res = await axios.get(`/api/movies/${movieId}`)
-            this.setState({movie: res.data.movie, reviews: res.data.reviews})
+            this.setState({movie: res.data.movie, reviews: res.data.reviews, favorite: res.data.favorite})
         } catch (err) {
             console.log(err)
         }
@@ -85,12 +87,21 @@ class MoviePage extends Component {
 
     handleMovieFavorite = async () => {
         const payload = {
-            movie_id: this.state.movie.id,
-            favorite_type: 1
+            movie_id: this.state.movie.id
         }
-        console.log('started')
         const res = await axios.post('/api/favorite_movies', payload)
-        console.log('working')
+        const favorite = {
+            favorite: true,
+            favorite_id: res.data.id
+        }
+        this.setState({favorite: favorite})
+    }
+
+    removeMovieFromFavorites = async() => {
+        const favoriteId = this.state.favorite.favorite_id
+        const res= await axios.delete(`/api/favorite_movies/${favoriteId}`)
+        const favorite = {favorite: false}
+        this.setState({favorite: favorite})
     }
 
     render() {
@@ -124,7 +135,9 @@ class MoviePage extends Component {
                     <Link to={{ pathname: '/newReview', state:{id: this.state.movie.id}}}><AddReview>AddReview</AddReview></Link> : ''}
                 </MovieInfo>
                 <UserOptions>
-                        <button onClick={this.handleMovieFavorite}>Favorite</button>
+                        {this.state.favorite.favorite ? 
+                        <Icon onClick={this.removeMovieFromFavorites} src='../../../icons/SVG/star-full.svg' alt='In your Favorites' /> : 
+                        <Icon onClick={this.handleMovieFavorite} src='../../../icons/SVG/star-empty.svg' alt='favorite' />}
                         <h5>Watch List</h5>
                 </UserOptions>
                 <ReviewList>

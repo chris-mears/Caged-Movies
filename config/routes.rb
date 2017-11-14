@@ -11,7 +11,7 @@ Rails.application.routes.draw do
       get 'search', on: :collection
       get 'search_tmdb', on: :collection
     end
-    resources :favorite_movies, only: [:create, :destroy, :update]
+    resources :favorite_movies, only: [:create, :destroy]
     resources :movie_comment, only: [:create, :destroy, :update]
     resources :review_likes, only: [:create, :destroy]
     resources :review_comments, only: [:create, :destroy, :update]

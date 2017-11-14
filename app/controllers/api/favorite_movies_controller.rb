@@ -1,6 +1,6 @@
 class Api::FavoriteMoviesController < ApplicationController
   before_action :authenticate_user!
-  # load_and_authorize_resource only: [:destroy, :create, :update]
+  load_and_authorize_resource
 
   def create
     @user = current_user

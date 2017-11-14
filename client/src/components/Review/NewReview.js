@@ -84,7 +84,7 @@ class NewReview extends Component {
             const movieId = this.props.location.state.id
             console.log(movieId)
             const res = await axios.get(`/api/movies/${movieId}`)
-            this.setState({movie: res.data})
+            this.setState({movie: res.data.movie})
         }
             
     }

@@ -86,7 +86,7 @@ class MoviePage extends Component {
     handleMovieFavorite = async () => {
         const payload = {
             movie_id: this.state.movie.id,
-            type: 1
+            favorite_type: 1
         }
         console.log('started')
         const res = await axios.post('/api/favorite_movies', payload)

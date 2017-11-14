@@ -16,7 +16,7 @@ class Api::MoviesController < ApplicationController
       @favorites.each do |favorite|
         if favorite.movie_id == movie.id
           hash[:favorite] = true
-          hash[:favorit_id] = favorite.id
+          hash[:favorite_id] = favorite.id
         end
       end
       @results << hash

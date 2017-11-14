@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import styled from 'styled-components'
-import {FlexRowCenter} from '../StyledComponents/FlexContainers'
+import {FlexRowCenter, FlexRowBetween} from '../StyledComponents/FlexContainers'
 
 const HeroUserContainer = FlexRowCenter.extend `
     padding-top:80px;
@@ -63,7 +63,7 @@ const TopPost = styled.div `
     }
 `
 
-const Movie = styled.div `
+const Movie = FlexRowBetween.extend `
     border: 1px solid #30415D;
     padding: 10px;
     font-size: 1.2em;
@@ -98,6 +98,12 @@ const Cage = FlexRowCenter.extend`
         height: 80%;
     }
 `
+const IconContainer = FlexRowCenter.extend`
+`
+
+const Icon = styled.img`
+margin: 0 20px;
+`
 
 class MainPage extends Component {
     state = {
@@ -118,6 +124,19 @@ class MainPage extends Component {
     getReviews = async() => {
         const res = await axios.get('/api/reviews')
         this.setState({reviews: res.data})
+    }
+
+    handleMovieFavorite = async (movieId) => {
+        const payload = {
+            movie_id: movieId
+        }
+        const res = await axios.post('/api/favorite_movies', payload)
+        this.getMovies()
+    }
+
+    removeMovieFromFavorites = async(favoriteId) => {
+        const res= await axios.delete(`/api/favorite_movies/${favoriteId}`)
+        this.getMovies()
     }
 
     render() {
@@ -145,6 +164,11 @@ class MainPage extends Component {
                 const movieIndex = String(index + 1)
                 return <Movie key={movie.id}>
                     <Link to={`/movie/${movie.id}/${MovieUrl}`}>{movieIndex}. {movie.title}</Link>
+                    <IconContainer>
+                    {movie.favorite ? 
+                        <Icon onClick={() => this.removeMovieFromFavorites(movie.favorite_id)} src='../../../icons/SVG/star-full.svg' alt='In your Favorites' /> : 
+                        <Icon onClick={() => this.handleMovieFavorite(movie.id)} src='../../../icons/SVG/star-empty.svg' alt='favorite' />}
+                    </IconContainer>
                 </Movie>
             })
 

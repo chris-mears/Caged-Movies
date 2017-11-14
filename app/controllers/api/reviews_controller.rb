@@ -18,8 +18,17 @@ class Api::ReviewsController < ApplicationController
   end
 
   def show
+    @user = current_user
     @review = Review.includes(:movie).find(params[:id])
-    render json: @review, include: [:movie]
+    review = {
+      title: @review.title,
+      id: @review.id,
+      body: @review.body,
+      genre: @review.genre,
+      movie: @review.movie,
+      belongs_to_user: @review.user == @user
+    }
+    render json: review
   end
 
   def create

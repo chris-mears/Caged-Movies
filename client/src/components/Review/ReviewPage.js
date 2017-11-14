@@ -103,11 +103,12 @@ class ReviewPage extends Component {
                     </Info>
                 </MovieInfo> 
             <ReviewOptions>
-            {this.props.signedIn ?
+            {this.props.signedIn && this.state.review.belongs_to_user ?
+            <div>
             <Link to={`/updatereview/${this.state.review.id}`} >
-            <Icon id={this.state.review.id} src='../../../icons/SVG/pencil.svg' alt='update' /></Link> : ''} 
-            {this.props.signedIn ? 
-            <Icon id={this.state.review.id} src='../../../icons/SVG/bin.svg' alt='delete' onClick={this.handleReviewDelete}/> : ''}
+            <Icon id={this.state.review.id} src='../../../icons/SVG/pencil.svg' alt='update' /></Link> 
+            <Icon id={this.state.review.id} src='../../../icons/SVG/bin.svg' alt='delete' onClick={this.handleReviewDelete}/>
+            </div> : ''}
             </ReviewOptions>   
                 <ReviewBody>
                     <p>{this.state.review.body}</p>

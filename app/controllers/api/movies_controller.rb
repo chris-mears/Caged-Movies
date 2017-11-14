@@ -1,4 +1,6 @@
 class Api::MoviesController < ApplicationController
+  before_action :authenticate_user!, :except => [:index, :search]
+  load_and_authorize_resource only: [:create, :update]
 
   #Index method for Movies
   def index
@@ -37,8 +39,18 @@ class Api::MoviesController < ApplicationController
   end
 
   def show
-    @movie = Movie.find_by_id(params[:id])
-    render json: @movie, include: [:reviews]
+    @user = current_user
+    @movie = Movie.includes(:reviews).find_by_id(params[:id])
+    @reviews = []
+    @movie.reviews.each do |review|
+      hash = {
+        title: review.title,
+        id: review.id,
+        belongs_to_user: review.user == @user
+      }
+      @reviews << hash
+    end
+    render json: {movie: @movie, reviews: @reviews}
   end
 
   def update

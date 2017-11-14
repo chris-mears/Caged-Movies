@@ -6,7 +6,7 @@ class Ability
     can :read, Movie
     can :read, Review
 
-    can [:destroy], Review do |review|
+    can [:destroy, :update, :create], Review do |review|
       review.user == user
     end
   end

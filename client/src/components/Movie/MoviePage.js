@@ -47,9 +47,8 @@ const Icon = styled.img`
 
 class MoviePage extends Component {
     state = {
-        movie: {
-            reviews: [],
-        }
+        movie: {},
+        reviews: [],
     }
 
     componentWillMount() {
@@ -64,8 +63,12 @@ class MoviePage extends Component {
     }
 
     getMovie = async (movieId) => {
-        const res = await axios.get(`/api/movies/${movieId}`)
-        this.setState({movie: res.data})
+        try {
+            const res = await axios.get(`/api/movies/${movieId}`)
+            this.setState({movie: res.data.movie, reviews: res.data.reviews})
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     handleReviewDelete = async (event) => {
@@ -76,18 +79,19 @@ class MoviePage extends Component {
 
     render() {
         let reviews = ''
-        if(this.state.movie.reviews.length === 0) {
+        if(this.state.reviews.length === 0) {
             reviews = <h3>No Reviews Yet. Login to create Review</h3>
         } else {
-            reviews =  this.state.movie.reviews.map((review) => {
+            reviews =  this.state.reviews.map((review) => {
                 return <Review key={review.id}>
                 <Link to={`/review/${review.id}`}>
                 {review.title}</Link><div>
-                {this.props.signedIn ? 
+                {this.props.signedIn && review.belongs_to_user ? 
+                <div>
                 <Link to={`/updatereview/${review.id}`} >
-                <Icon id={review.id} src='../../../icons/SVG/pencil.svg' alt='update' /></Link> : ''} 
-                {this.props.signedIn ? 
-                <Icon id={review.id} src='../../../icons/SVG/bin.svg' alt='delete' onClick={this.handleReviewDelete}/> : ''}
+                <Icon id={review.id} src='../../../icons/SVG/pencil.svg' alt='update' /></Link> 
+                <Icon id={review.id} src='../../../icons/SVG/bin.svg' alt='delete' onClick={this.handleReviewDelete}/> 
+                </div> : ''}
                 </div></Review>
         })}
         return (

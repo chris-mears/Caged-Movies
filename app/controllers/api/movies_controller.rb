@@ -25,6 +25,8 @@ class Api::MoviesController < ApplicationController
   end
 
   def search
+    @user = current_user
+    @favorites = @user.favorite_movies
     if params[:title]
       if params[:title] == ''
         render json: {msg: 'Please enter in a Movie'}
@@ -36,8 +38,24 @@ class Api::MoviesController < ApplicationController
         @movies.each do |movie|
           @reviews << movie.reviews
         end
+        @results = []
+        @movies.each do |movie|
+          hash = {
+            title: movie.title,
+            id: movie.id,
+            poster: movie.poster,
+            tag_line: movie.tag_line
+          }
+          @favorites.each do |favorite|
+            if favorite.movie_id == movie.id
+              hash[:favorite] = true
+              hash[:favorite_id] = favorite.id
+            end
+          end
+          @results << hash
+        end
         @reviews.flatten!
-        render json: {movies: @movies, reviews: @reviews}
+        render json: {movies: @results, reviews: @reviews}
       end
     elsif params[:genre]
       if params[:genre] == ''
@@ -49,7 +67,25 @@ class Api::MoviesController < ApplicationController
         @reviews = Review.where("genre ILIKE ?", "%#{params[:genre]}%")
         @movies.sort_by {|movie| movie['likes']}
         @reviews.sort_by {|review| review['likes']}
-        render json: {movies: @movies, reviews: @reviews}
+
+        @results = []
+        @movies.each do |movie|
+          hash = {
+            title: movie.title,
+            id: movie.id,
+            poster: movie.poster,
+            tag_line: movie.tag_line
+          }
+          @favorites.each do |favorite|
+            if favorite.movie_id == movie.id
+              hash[:favorite] = true
+              hash[:favorite_id] = favorite.id
+            end
+          end
+          @results << hash
+        end
+
+        render json: {movies: @results, reviews: @reviews}
       end
     end
   end

@@ -6,6 +6,7 @@ class Api::MoviesController < ApplicationController
   def index
     @user = current_user
     @favorites = @user.favorite_movies
+    @watchlist = @user.watch_list_movies
     @movies = Movie.order('likes Desc').all
     @results = []
     @movies.each do |movie|
@@ -19,6 +20,12 @@ class Api::MoviesController < ApplicationController
           hash[:favorite_id] = favorite.id
         end
       end
+      @watchlist.each do |wlm|
+        if wlm.movie_id == movie.id
+          hash[:in_watchlist] = true
+          hash[:watchlist_movie_id] = wlm.id
+        end
+      end
       @results << hash
     end
     render json: @results
@@ -27,6 +34,7 @@ class Api::MoviesController < ApplicationController
   def search
     @user = current_user
     @favorites = @user.favorite_movies
+    @watchlist = @user.watch_list_movies
     if params[:title]
       if params[:title] == ''
         render json: {msg: 'Please enter in a Movie'}
@@ -50,6 +58,12 @@ class Api::MoviesController < ApplicationController
             if favorite.movie_id == movie.id
               hash[:favorite] = true
               hash[:favorite_id] = favorite.id
+            end
+          end
+          @watchlist.each do |wlm|
+            if wlm.movie_id == movie.id
+              hash[:in_watchlist] = true
+              hash[:watchlist_movie_id] = wlm.id
             end
           end
           @results << hash
@@ -82,6 +96,12 @@ class Api::MoviesController < ApplicationController
               hash[:favorite_id] = favorite.id
             end
           end
+          @favorites.each do |favorite|
+            if favorite.movie_id == movie.id
+              hash[:favorite] = true
+              hash[:favorite_id] = favorite.id
+            end
+          end
           @results << hash
         end
 
@@ -103,14 +123,22 @@ class Api::MoviesController < ApplicationController
       @reviews << hash
     end
     @favorite = FavoriteMovie.where("user_id = ? AND movie_id = ?", @user.id, @movie.id)
+    @watchlist = WatchListMovie.where("user_id = ? AND movie_id = ?", @user.id, @movie.id)
     if @favorite.empty?
-      id = 'null'
+      favorite_id = 'null'
     else
-      id = @favorite[0].id
+      favorite_id = @favorite[0].id
+    end
+    if @watchlist.empty?
+      watchlist_id = 'null'
+    else
+      watchlist_id = @watchlist[0].id
     end
     result = {
       favorite: !@favorite.empty?,
-      favorite_id: id
+      favorite_id: favorite_id,
+      in_watchlist: !@watchlist.empty?,
+      watchlist_id: watchlist_id
     }
     render json: {movie: @movie, reviews: @reviews, favorite: result}
   end

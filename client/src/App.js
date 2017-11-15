@@ -26,6 +26,7 @@ class App extends Component {
     state = {
         signedIn: false,
         toggleRedirect: false,
+        user: {}
     }
 
     async componentWillMount() {
@@ -34,6 +35,7 @@ class App extends Component {
   
           if (signedIn) {
               setAxiosDefaults()
+              this.getUserInfo()
           }
   
           this.setState({
@@ -47,7 +49,7 @@ class App extends Component {
     signUp = async (email, password, password_confirmation, name, nickname) => {
         const emailhash = md5(email)
         try {
-            const image = `https://www.gravatar.com/avatar/${emailhash}?s=200`
+            const image = `https://www.gravatar.com/avatar/${emailhash}.jpg?s=300`
             console.log(image)
             const payload = {
                 email: email,
@@ -64,6 +66,11 @@ class App extends Component {
         } catch (error) {
             console.log(error)
         }
+    }
+
+    getUserInfo = async() => {
+        const res = await axios.get('/api/user')
+        console.log(res.data)
     }
 
     signIn = async (email, password) => {

@@ -7,8 +7,10 @@ class User < ActiveRecord::Base
 
   has_many :reviews, dependent: :destroy
   has_many :favorite_movies, dependent: :destroy
+  has_many :favorites, through: :favorite_movies, source: :movie
   has_many :review_likes, dependent: :destroy
   has_many :review_comments, dependent: :destroy
   has_many :movie_comments, dependent: :destroy
   has_many :watch_list_movies, dependent: :destroy
+  has_many :watch_list, through: :watch_list_movies, source: :movie
 end

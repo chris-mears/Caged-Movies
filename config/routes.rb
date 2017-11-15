@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     resources :review_likes, only: [:create, :destroy]
     resources :review_comments, only: [:create, :destroy, :update]
 
+    get "/user", to: "user#show"
     get "tmdb_movies", to: "tmdb_api_search#index"
     get "tmdb_movies/:id", to: "tmdb_api_search#show"
   end

@@ -20,13 +20,26 @@ class Api::ReviewsController < ApplicationController
   def show
     @user = current_user
     @review = Review.includes(:movie).find(params[:id])
+    if @user != nil
+      @review_likes = ReviewLike.where("user_id = ? AND review_id = ?", @user.id, @review.id)
+      if @review_likes.empty?
+        review_like_id = 'null'
+      else
+        review_like_id = @review_likes[0].id
+      end
+    else
+      review_like_id = 'null'
+    end
+
     review = {
       title: @review.title,
       id: @review.id,
       body: @review.body,
       genre: @review.genre,
       movie: @review.movie,
-      belongs_to_user: @review.user == @user
+      belongs_to_user: @review.user == @user,
+      review_like_id: review_like_id,
+      review_liked: !@review_likes.empty?
     }
     render json: review
   end

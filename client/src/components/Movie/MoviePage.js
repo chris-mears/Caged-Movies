@@ -90,17 +90,38 @@ class MoviePage extends Component {
             movie_id: this.state.movie.id
         }
         const res = await axios.post('/api/favorite_movies', payload)
-        const favorite = {
-            favorite: true,
-            favorite_id: res.data.id
-        }
+        const favorite = {...this.state.favorite}
+            favorite.favorite = true
+            favorite.favorite_id = res.data.id
         this.setState({favorite: favorite})
     }
 
     removeMovieFromFavorites = async() => {
         const favoriteId = this.state.favorite.favorite_id
         const res= await axios.delete(`/api/favorite_movies/${favoriteId}`)
-        const favorite = {favorite: false}
+        const favorite = {...this.state.favorite}
+        favorite.favorite = false
+        favorite.favorite_id = null
+        this.setState({favorite: favorite})
+    }
+
+    handleMovieWatchList = async () => {
+        const payload = {
+            movie_id: this.state.movie.id
+        }
+        const res = await axios.post('/api/watch_list_movies', payload)
+        const favorite = {...this.state.favorite}
+        favorite.in_watchlist = true
+        favorite.watchlist_id = res.data.id
+        this.setState({favorite: favorite})
+    }
+
+    removeMovieFromWatchList = async() => {
+        const watchlistId = this.state.favorite.watchlist_id
+        const res= await axios.delete(`/api/watch_list_movies/${watchlistId}`)
+        const favorite = {...this.state.favorite}
+        favorite.in_watchlist = false
+        favorite.watchlist_id = null
         this.setState({favorite: favorite})
     }
 
@@ -138,7 +159,9 @@ class MoviePage extends Component {
                         {this.state.favorite.favorite ? 
                         <Icon onClick={this.removeMovieFromFavorites} src='../../../icons/SVG/star-full.svg' alt='In your Favorites' /> : 
                         <Icon onClick={this.handleMovieFavorite} src='../../../icons/SVG/star-empty.svg' alt='favorite' />}
-                        <h5>Watch List</h5>
+                        {this.state.favorite.in_watchlist ? 
+                        <Icon onClick={this.removeMovieFromWatchList} src='../../../icons/SVG/clipboard.svg' alt='In your WatchList' /> : 
+                        <Icon onClick={this.handleMovieWatchList} src='../../../icons/SVG/list.svg' alt='Add to WatchList' />}
                 </UserOptions>
                 <ReviewList>
                     <h2>Reviews:</h2>

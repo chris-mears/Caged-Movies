@@ -81,6 +81,30 @@ class ReviewPage extends Component {
         this.setState({toggleRedirect: true})
     }
 
+    handleReviewLike = async () => {
+        const payload = {
+            review_id: this.state.review.id
+        }
+        await axios.post('/api/review_likes', payload)
+        const reviewPayload = {
+            likes: (this.state.review.likes + 1)
+        }
+        const reviewId = this.state.review.id
+        await axios.put(`/api/reviews/${reviewId}`, reviewPayload)
+        this.getReview(reviewId)
+    }
+
+    removeLikeFromReview = async() => {
+        const likeId = this.state.review.review_like_id
+        await axios.delete(`/api/review_likes/${likeId}`)
+        const reviewPayload = {
+            likes: (this.state.review.likes - 1)
+        }
+        const reviewId = this.state.review.id
+        await axios.put(`/api/reviews/${reviewId}`, reviewPayload)
+        this.getReview(reviewId)
+    }
+
     render() {
         if(this.state.toggleRedirect) {
             return <Redirect to='/' />
@@ -103,12 +127,18 @@ class ReviewPage extends Component {
                     </Info>
                 </MovieInfo> 
             <ReviewOptions>
-            {this.props.signedIn && this.state.review.belongs_to_user ?
+            {this.props.signedIn ?
+            <div>
+            {this.state.review.review_liked ?
+            <Icon onClick={this.removeLikeFromReview} src='../../../icons/SVG/heart.svg' alt="liked" /> :
+            <Icon onClick={this.handleReviewLike} src='../../../icons/SVG/heart-o.svg' alt="Click to Like" /> }
+            {this.state.review.belongs_to_user ?
             <div>
             <Link to={`/updatereview/${this.state.review.id}`} >
             <Icon id={this.state.review.id} src='../../../icons/SVG/pencil.svg' alt='update' /></Link> 
             <Icon id={this.state.review.id} src='../../../icons/SVG/bin.svg' alt='delete' onClick={this.handleReviewDelete}/>
-            </div> : ''}
+             </div> : ''}
+             </div> : ''}
             </ReviewOptions>   
                 <ReviewBody>
                     <p>{this.state.review.body}</p>

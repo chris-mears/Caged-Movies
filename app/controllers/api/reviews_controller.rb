@@ -34,6 +34,7 @@ class Api::ReviewsController < ApplicationController
     review = {
       title: @review.title,
       id: @review.id,
+      likes: @review.likes,
       body: @review.body,
       genre: @review.genre,
       movie: @review.movie,

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { FlexRowBetween } from '../StyledComponents/FlexContainers'
+import { FlexRowBetween, FlexRowCenter } from '../StyledComponents/FlexContainers'
 import { Button } from '../StyledComponents/Button'
 
 
@@ -42,6 +42,7 @@ const Logo = styled.div `
     }
     }
 `
+const SignIn = FlexRowCenter.extend``
 
 class Header extends Component {
     render() {
@@ -54,9 +55,10 @@ class Header extends Component {
                     <p>Caged Movies</p>
                     </div>
                     </Link></Logo>
-                    <div>
+                    <SignIn>
+                    {this.props.signedIn ? this.props.nickname : ''}
                     {this.props.signedIn ? signOut : signIn}
-                    </div>
+                    </SignIn>
                 </HeaderContainer>
         );
     }

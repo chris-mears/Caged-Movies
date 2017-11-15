@@ -63,6 +63,7 @@ class App extends Component {
             saveAuthTokens(response.headers)
 
             this.setState({signedIn: true, toggleRedirect: true})
+            this.getUserInfo()
         } catch (error) {
             console.log(error)
         }
@@ -83,6 +84,7 @@ class App extends Component {
             saveAuthTokens(response.headers)
 
             this.setState({signedIn: true, toggleRedirect: true})
+            this.getUserInfo()
         } catch (error) {
             console.log(error)
         }
@@ -96,7 +98,7 @@ class App extends Component {
   
           clearAuthTokens();
   
-          this.setState({signedIn: false, toggleRedirect: false})
+          this.setState({signedIn: false, toggleRedirect: false, user: {}})
       } catch(error) {
           console.log(error)
       }
@@ -113,6 +115,7 @@ class App extends Component {
 
         const HomePageComponent = () => (
             <MainPage
+            user={this.state.user}
             signedIn={this.state.signedIn} />
         )
         
@@ -124,7 +127,8 @@ class App extends Component {
                 <Header signOut={this.signOut} 
                 signedIn={this.state.signedIn} 
                 handleLogoClick={this.handleLogoClick}
-                toggleSignIn={this.state.toggleSignIn} />
+                toggleSignIn={this.state.toggleSignIn}
+                nickname={this.state.user.nickname} />
                 <SearchComponent
                 signedIn={this.state.signedIn} />
                 </TopContents>

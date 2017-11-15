@@ -70,7 +70,7 @@ class App extends Component {
 
     getUserInfo = async() => {
         const res = await axios.get('/api/user')
-        console.log(res.data)
+        this.setState({user: res.data})
     }
 
     signIn = async (email, password) => {

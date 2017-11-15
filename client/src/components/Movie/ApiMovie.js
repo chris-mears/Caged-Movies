@@ -19,10 +19,16 @@ const ActivePoster = Poster.extend`
     margin-right: 15px;
 `
 
+const Icon = styled.img `
+margin: 0 10px 0 40px;
+height: 20px;
+`
+
 class ApiMovie extends Component {
     state = {
         toggleMore: false,
-        movie: {}
+        movie: {},
+        toggleRedirect: false
     }
 
     handleMoreInfo = async() => {
@@ -44,8 +50,8 @@ class ApiMovie extends Component {
             genre: this.state.movie.genre,
             likes: 0
         }
-        const res = await axios.post('/api/movies', payload)
-        //Add a redirect here to go to the movies page
+        await axios.post('/api/movies', payload)
+        this.props.handleSearch()
     }
 
     render() {
@@ -71,7 +77,7 @@ class ApiMovie extends Component {
                     </div>
                     {this.state.toggleMore && this.props.signedIn ?
                     <div>
-                        <h2 onClick={this.saveMovie}>Save Movie</h2>
+                        <Icon onClick={this.saveMovie} src='../../../icons/SVG/plus.svg' alt='Add Movie' />
                     </div>
                     : ''}
 

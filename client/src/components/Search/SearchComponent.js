@@ -60,8 +60,14 @@ position: fixed;
 top: 0;
 left: 0;
 width: 100%;
+height: 100%;
+overflow: auto;
 z-index: 10;
 background-color: rgba(254,254,254,0.7);
+`
+
+const SearchWrapper = styled.div`
+    overflow: scroll;
 `
 const OptionButton = Button.extend`
 `
@@ -89,7 +95,6 @@ const ResultsContainer = styled.div`
     min-height: 85vh;
     color: white;
     width: 75vw;
-
 `
 const Movie = FlexRowBetween.extend`
     border: 1px solid white;
@@ -218,9 +223,7 @@ class SearchComponent extends Component {
         }
     }
 
-    handleKeyPress = (event) => {
-    if (event.charCode === 13) {
-        event.preventDefault()
+    handleSearch = () => {
         if (this.state.toggleMovies) {
             this.searchMovies()
         } 
@@ -230,6 +233,12 @@ class SearchComponent extends Component {
         else if (this.state.toggleGenre) {
             this.searchGenres()
         }
+    }
+
+    handleKeyPress = (event) => {
+    if (event.charCode === 13) {
+        event.preventDefault()
+        this.handleSearch()
     }
     }
 
@@ -242,15 +251,7 @@ class SearchComponent extends Component {
             likes: (likes + 1)
         }
         await axios.put(`/api/movies/${movieId}`, moviePayload)
-        if (this.state.toggleMovies) {
-            this.searchMovies()
-        } 
-        else if (this.state.toggleReviews) {
-            this.searchReviews()
-        }
-        else if (this.state.toggleGenre) {
-            this.searchGenres()
-        }
+        this.handleSearch()
     }
 
     removeMovieFromFavorites = async(favoriteId, movieId, likes) => {
@@ -259,15 +260,7 @@ class SearchComponent extends Component {
             likes: (likes - 1)
         }
         await axios.put(`/api/movies/${movieId}`, moviePayload)
-        if (this.state.toggleMovies) {
-            this.searchMovies()
-        } 
-        else if (this.state.toggleReviews) {
-            this.searchReviews()
-        }
-        else if (this.state.toggleGenre) {
-            this.searchGenres()
-        }
+        this.handleSearch()
     }
 
     handleMovieWatchList = async (movieId) => {
@@ -275,28 +268,12 @@ class SearchComponent extends Component {
             movie_id: movieId
         }
         const res = await axios.post('/api/watch_list_movies', payload)
-        if (this.state.toggleMovies) {
-            this.searchMovies()
-        } 
-        else if (this.state.toggleReviews) {
-            this.searchReviews()
-        }
-        else if (this.state.toggleGenre) {
-            this.searchGenres()
-        }
+        this.handleSearch()
     }
 
     removeMovieFromWatchList = async(watchlistId) => {
         const res= await axios.delete(`/api/watch_list_movies/${watchlistId}`)
-        if (this.state.toggleMovies) {
-            this.searchMovies()
-        } 
-        else if (this.state.toggleReviews) {
-            this.searchReviews()
-        }
-        else if (this.state.toggleGenre) {
-            this.searchGenres()
-        }
+        this.handleSearch()
     }
 
     render() {
@@ -355,7 +332,9 @@ class SearchComponent extends Component {
                     <ApiMovie key={movie.id} title={movie.title}
                     movieId={movie.id}
                     poster={movie.poster}
-                    signedIN={this.props.signedIn} />
+                    signedIn={this.props.signedIn}
+                    handleSearch={this.handleSearch}
+                    />
                 )
             })}</div>
             </div>
@@ -386,6 +365,7 @@ class SearchComponent extends Component {
         
 
         const fullScreenSearch = <FullScreen onKeyPress={this.handleKeyPress}>
+        <SearchWrapper>
             <ActiveSearchDiv>
                 <ActiveIcon src='../../../icons/SVG/search.svg' alt="search"/>
                 <ActiveSearch
@@ -411,6 +391,7 @@ class SearchComponent extends Component {
                     {results}
                 </ResultsContainer>
             </SearchResults>
+        </SearchWrapper>
         </FullScreen>
 
         const searchBar = this.state.toggleSearch

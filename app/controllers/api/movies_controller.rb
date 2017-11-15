@@ -1,29 +1,34 @@
 class Api::MoviesController < ApplicationController
-  before_action :authenticate_user!, :except => [:index, :search]
+  before_action :authenticate_user!, :except => [:index, :show, :search]
   load_and_authorize_resource only: [:create, :update]
 
   #Index method for Movies
   def index
     @user = current_user
-    @favorites = @user.favorite_movies
-    @watchlist = @user.watch_list_movies
+    if !@user == nil
+      @favorites = @user.favorite_movies
+      @watchlist = @user.watch_list_movies
+    end
     @movies = Movie.order('likes Desc').all
+
     @results = []
     @movies.each do |movie|
       hash =  {
         title: movie.title,
         id: movie.id
       }
-      @favorites.each do |favorite|
-        if favorite.movie_id == movie.id
-          hash[:favorite] = true
-          hash[:favorite_id] = favorite.id
+      if !@user == nil
+        @favorites.each do |favorite|
+          if favorite.movie_id == movie.id
+            hash[:favorite] = true
+            hash[:favorite_id] = favorite.id
+          end
         end
-      end
-      @watchlist.each do |wlm|
-        if wlm.movie_id == movie.id
-          hash[:in_watchlist] = true
-          hash[:watchlist_movie_id] = wlm.id
+        @watchlist.each do |wlm|
+          if wlm.movie_id == movie.id
+            hash[:in_watchlist] = true
+            hash[:watchlist_movie_id] = wlm.id
+          end
         end
       end
       @results << hash
@@ -33,8 +38,10 @@ class Api::MoviesController < ApplicationController
 
   def search
     @user = current_user
-    @favorites = @user.favorite_movies
-    @watchlist = @user.watch_list_movies
+    if !@user == nil
+      @favorites = @user.favorite_movies
+      @watchlist = @user.watch_list_movies
+    end
     if params[:title]
       if params[:title] == ''
         render json: {msg: 'Please enter in a Movie'}
@@ -54,16 +61,18 @@ class Api::MoviesController < ApplicationController
             poster: movie.poster,
             tag_line: movie.tag_line
           }
-          @favorites.each do |favorite|
-            if favorite.movie_id == movie.id
-              hash[:favorite] = true
-              hash[:favorite_id] = favorite.id
+          if !@user == nil
+            @favorites.each do |favorite|
+              if favorite.movie_id == movie.id
+                hash[:favorite] = true
+                hash[:favorite_id] = favorite.id
+              end
             end
-          end
-          @watchlist.each do |wlm|
-            if wlm.movie_id == movie.id
-              hash[:in_watchlist] = true
-              hash[:watchlist_movie_id] = wlm.id
+            @watchlist.each do |wlm|
+              if wlm.movie_id == movie.id
+                hash[:in_watchlist] = true
+                hash[:watchlist_movie_id] = wlm.id
+              end
             end
           end
           @results << hash
@@ -90,16 +99,18 @@ class Api::MoviesController < ApplicationController
             poster: movie.poster,
             tag_line: movie.tag_line
           }
-          @favorites.each do |favorite|
-            if favorite.movie_id == movie.id
-              hash[:favorite] = true
-              hash[:favorite_id] = favorite.id
+          if !@user == nil
+            @favorites.each do |favorite|
+              if favorite.movie_id == movie.id
+                hash[:favorite] = true
+                hash[:favorite_id] = favorite.id
+              end
             end
-          end
-          @watchlist.each do |wlm|
-            if wlm.movie_id == movie.id
-              hash[:in_watchlist] = true
-              hash[:watchlist_movie_id] = wlm.id
+            @watchlist.each do |wlm|
+              if wlm.movie_id == movie.id
+                hash[:in_watchlist] = true
+                hash[:watchlist_movie_id] = wlm.id
+              end
             end
           end
           @results << hash
@@ -122,24 +133,35 @@ class Api::MoviesController < ApplicationController
       }
       @reviews << hash
     end
-    @favorite = FavoriteMovie.where("user_id = ? AND movie_id = ?", @user.id, @movie.id)
-    @watchlist = WatchListMovie.where("user_id = ? AND movie_id = ?", @user.id, @movie.id)
-    if @favorite.empty?
-      favorite_id = 'null'
-    else
-      favorite_id = @favorite[0].id
+    if ! @user == nil
+      @favorite = FavoriteMovie.where("user_id = ? AND movie_id = ?", @user.id, @movie.id)
+      @watchlist = WatchListMovie.where("user_id = ? AND movie_id = ?", @user.id, @movie.id)
     end
-    if @watchlist.empty?
-      watchlist_id = 'null'
+    if !@user == nil
+      if @favorite.empty?
+        favorite_id = 'null'
+      else
+        favorite_id = @favorite[0].id
+      end
+      if @watchlist.empty?
+        watchlist_id = 'null'
+      else
+        watchlist_id = @watchlist[0].id
+      end
+      result = {
+        favorite: !@favorite.empty?,
+        favorite_id: favorite_id,
+        in_watchlist: !@watchlist.empty?,
+        watchlist_id: watchlist_id
+      }
     else
-      watchlist_id = @watchlist[0].id
+      result = {
+        favorite: false,
+        favorite_id: 'null',
+        in_watchlist: false,
+        watchlist_id: 'null'
+      }
     end
-    result = {
-      favorite: !@favorite.empty?,
-      favorite_id: favorite_id,
-      in_watchlist: !@watchlist.empty?,
-      watchlist_id: watchlist_id
-    }
     render json: {movie: @movie, reviews: @reviews, favorite: result}
   end
 

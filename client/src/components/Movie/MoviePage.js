@@ -79,10 +79,10 @@ class MoviePage extends Component {
         }
     }
 
-    handleReviewDelete = async (event) => {
-        const reviewId = event.target.id
+    handleReviewDelete = async (reviewId) => {
         await axios.delete(`/api/reviews/${reviewId}`)
-        this.getMovie()
+        const { movieId } = this.props.match.params
+        this.getMovie(movieId)
     }
 
     handleMovieFavorite = async () => {
@@ -137,8 +137,8 @@ class MoviePage extends Component {
                 {this.props.signedIn && review.belongs_to_user ? 
                 <div>
                 <Link to={`/updatereview/${review.id}`} >
-                <Icon id={review.id} src='../../../icons/SVG/pencil.svg' alt='update' /></Link> 
-                <Icon id={review.id} src='../../../icons/SVG/bin.svg' alt='delete' onClick={this.handleReviewDelete}/> 
+                <Icon src='../../../icons/SVG/pencil.svg' alt='update' /></Link> 
+                <Icon src='../../../icons/SVG/bin.svg' alt='delete' onClick={() => this.handleReviewDelete(review.id)}/> 
                 </div> : ''}
                 </div></Review>
         })}

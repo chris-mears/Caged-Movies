@@ -96,10 +96,10 @@ class Api::MoviesController < ApplicationController
               hash[:favorite_id] = favorite.id
             end
           end
-          @favorites.each do |favorite|
-            if favorite.movie_id == movie.id
-              hash[:favorite] = true
-              hash[:favorite_id] = favorite.id
+          @watchlist.each do |wlm|
+            if wlm.movie_id == movie.id
+              hash[:in_watchlist] = true
+              hash[:watchlist_movie_id] = wlm.id
             end
           end
           @results << hash

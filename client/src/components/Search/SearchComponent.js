@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import styled from 'styled-components'
 import axios from 'axios'
 import { Link, Redirect } from 'react-router-dom'
-import {FlexRow, FlexRowCenter, FlexColumn} from '../StyledComponents/FlexContainers'
+import {FlexRow, FlexRowCenter, FlexColumn, FlexRowBetween} from '../StyledComponents/FlexContainers'
 import {Button} from '../StyledComponents/Button'
 import ApiMovie from '../Movie/ApiMovie'
 
@@ -91,7 +91,7 @@ const ResultsContainer = styled.div`
     width: 75vw;
 
 `
-const Movie = FlexRow.extend`
+const Movie = FlexRowBetween.extend`
     border: 1px solid white;
     margin: 10px 0;
     img {
@@ -119,6 +119,12 @@ const Title = styled.div`
     h5 {
         margin: 0;
     }
+`
+
+const MovieInfo = FlexRow.extend`
+`
+
+const UserOptions = styled.div`
 `
 
 class SearchComponent extends Component {
@@ -227,6 +233,35 @@ class SearchComponent extends Component {
     }
     }
 
+    handleMovieFavorite = async (movieId) => {
+        const payload = {
+            movie_id: movieId
+        }
+        const res = await axios.post('/api/favorite_movies', payload)
+        if (this.state.toggleMovies) {
+            this.searchMovies()
+        } 
+        else if (this.state.toggleReviews) {
+            this.searchReviews()
+        }
+        else if (this.state.toggleGenre) {
+            this.searchGenres()
+        }
+    }
+
+    removeMovieFromFavorites = async(favoriteId) => {
+        const res= await axios.delete(`/api/favorite_movies/${favoriteId}`)
+        if (this.state.toggleMovies) {
+            this.searchMovies()
+        } 
+        else if (this.state.toggleReviews) {
+            this.searchReviews()
+        }
+        else if (this.state.toggleGenre) {
+            this.searchGenres()
+        }
+    }
+
     render() {
         const titleView = <Title>
             <h2>
@@ -248,11 +283,19 @@ class SearchComponent extends Component {
                 .toLowerCase()
                 return (
                     <Movie key={movie.id}>
+                    <MovieInfo>
                     <img src={movie.poster} alt={movie.title} />
                     <div>
                         <h4><Link to={`/movie/${movie.id}/${MovieUrl}`} onClick={this.handleCancel}>{movie.title}</Link></h4>
                         <p>{movie.tag_line}</p>
                     </div>
+                    </MovieInfo>
+
+                    <UserOptions>
+                    {movie.favorite ? 
+                        <Icon onClick={() => this.removeMovieFromFavorites(movie.favorite_id)} src='../../../icons/SVG/star-full.svg' alt='In your Favorites' /> : 
+                        <Icon onClick={() => this.handleMovieFavorite(movie.id)} src='../../../icons/SVG/star-empty.svg' alt='favorite' />}
+                    </UserOptions>
                     </Movie>
                 )
             })}</div>

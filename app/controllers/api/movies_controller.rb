@@ -1,11 +1,10 @@
 class Api::MoviesController < ApplicationController
   before_action :authenticate_user!, :except => [:index, :show, :search]
-  load_and_authorize_resource only: [:create, :update]
 
   #Index method for Movies
   def index
     @user = current_user
-    if !@user == nil
+    if @user != nil
       @favorites = @user.favorite_movies
       @watchlist = @user.watch_list_movies
     end
@@ -15,9 +14,10 @@ class Api::MoviesController < ApplicationController
     @movies.each do |movie|
       hash =  {
         title: movie.title,
-        id: movie.id
+        id: movie.id,
+        likes: movie.likes
       }
-      if !@user == nil
+      if @user != nil
         @favorites.each do |favorite|
           if favorite.movie_id == movie.id
             hash[:favorite] = true
@@ -38,7 +38,7 @@ class Api::MoviesController < ApplicationController
 
   def search
     @user = current_user
-    if !@user == nil
+    if @user != nil
       @favorites = @user.favorite_movies
       @watchlist = @user.watch_list_movies
     end
@@ -59,9 +59,10 @@ class Api::MoviesController < ApplicationController
             title: movie.title,
             id: movie.id,
             poster: movie.poster,
-            tag_line: movie.tag_line
+            tag_line: movie.tag_line,
+            likes: movie.likes
           }
-          if !@user == nil
+          if @user != nil
             @favorites.each do |favorite|
               if favorite.movie_id == movie.id
                 hash[:favorite] = true
@@ -97,9 +98,10 @@ class Api::MoviesController < ApplicationController
             title: movie.title,
             id: movie.id,
             poster: movie.poster,
-            tag_line: movie.tag_line
+            tag_line: movie.tag_line,
+            likes: movie.likes
           }
-          if !@user == nil
+          if @user != nil
             @favorites.each do |favorite|
               if favorite.movie_id == movie.id
                 hash[:favorite] = true
@@ -133,11 +135,11 @@ class Api::MoviesController < ApplicationController
       }
       @reviews << hash
     end
-    if ! @user == nil
+    if @user != nil
       @favorite = FavoriteMovie.where("user_id = ? AND movie_id = ?", @user.id, @movie.id)
       @watchlist = WatchListMovie.where("user_id = ? AND movie_id = ?", @user.id, @movie.id)
     end
-    if !@user == nil
+    if @user != nil
       if @favorite.empty?
         favorite_id = 'null'
       else
@@ -154,7 +156,7 @@ class Api::MoviesController < ApplicationController
         in_watchlist: !@watchlist.empty?,
         watchlist_id: watchlist_id
       }
-    else
+    elsif @user == nil
       result = {
         favorite: false,
         favorite_id: 'null',
@@ -166,6 +168,7 @@ class Api::MoviesController < ApplicationController
   end
 
   def update
+    @user = current_user
     @movie = Movie.find_by_id(params[:id])
     @movie.update_attributes(movie_params)
     render json: @movie

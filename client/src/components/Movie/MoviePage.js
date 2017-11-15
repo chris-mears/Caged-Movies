@@ -89,20 +89,24 @@ class MoviePage extends Component {
         const payload = {
             movie_id: this.state.movie.id
         }
-        const res = await axios.post('/api/favorite_movies', payload)
-        const favorite = {...this.state.favorite}
-            favorite.favorite = true
-            favorite.favorite_id = res.data.id
-        this.setState({favorite: favorite})
+        await axios.post('/api/favorite_movies', payload)
+        const moviePayload = {
+            likes: (this.state.movie.likes + 1)
+        }
+        const movieId = this.state.movie.id
+        await axios.put(`/api/movies/${movieId}`, moviePayload)
+        this.getMovie(movieId)
     }
 
     removeMovieFromFavorites = async() => {
         const favoriteId = this.state.favorite.favorite_id
-        const res= await axios.delete(`/api/favorite_movies/${favoriteId}`)
-        const favorite = {...this.state.favorite}
-        favorite.favorite = false
-        favorite.favorite_id = null
-        this.setState({favorite: favorite})
+        await axios.delete(`/api/favorite_movies/${favoriteId}`)
+        const moviePayload = {
+            likes: (this.state.movie.likes - 1)
+        }
+        const movieId = this.state.movie.id
+        await axios.put(`/api/movies/${movieId}`, moviePayload)
+        this.getMovie(movieId)
     }
 
     handleMovieWatchList = async () => {

@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Route, BrowserRouter as Router, Switch} from 'react-router-dom'
 import axios from 'axios'
 import styled from 'styled-components'
+import md5 from 'md5'
 import {clearAuthTokens, saveAuthTokens, setAxiosDefaults, userIsLoggedIn} from "./util/SessionHeaderUtil"
 
 import SignUpLogIn from './components/user/SignUpLogIn'
@@ -43,12 +44,18 @@ class App extends Component {
       }
   }
 
-    signUp = async (email, password, password_confirmation) => {
+    signUp = async (email, password, password_confirmation, name, nickname) => {
+        const emailhash = md5(email)
         try {
+            const image = `https://www.gravatar.com/avatar/${emailhash}?s=200`
+            console.log(image)
             const payload = {
                 email: email,
                 password: password,
-                password_confirmation: password_confirmation
+                password_confirmation: password_confirmation,
+                name: name,
+                nickname: nickname,
+                image: image
             }
             const response = await axios.post('/auth', payload)
             saveAuthTokens(response.headers)

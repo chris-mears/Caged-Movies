@@ -177,6 +177,7 @@ class MainPage extends Component {
                 const movieIndex = String(index + 1)
                 return <Movie key={movie.id}>
                     <Link to={`/movie/${movie.id}/${MovieUrl}`}>{movieIndex}. {movie.title}</Link>
+                    {this.props.signedIn ?
                     <IconContainer>
                     {movie.favorite ? 
                         <Icon onClick={() => this.removeMovieFromFavorites(movie.favorite_id)} src='../../../icons/SVG/star-full.svg' alt='In your Favorites' /> : 
@@ -184,7 +185,7 @@ class MainPage extends Component {
                     {movie.in_watchlist ? 
                         <Icon onClick={() => this.removeMovieFromWatchList(movie.watchlist_movie_id)} src='../../../icons/SVG/clipboard.svg' alt='In your WatchList' /> : 
                         <Icon onClick={() => this.handleMovieWatchList(movie.id)} src='../../../icons/SVG/list.svg' alt='Add to WatchList' />}
-                    </IconContainer>
+                    </IconContainer> : ''}
                 </Movie>
             })
 

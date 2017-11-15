@@ -155,6 +155,7 @@ class MoviePage extends Component {
                     {this.props.signedIn ? 
                     <Link to={{ pathname: '/newReview', state:{id: this.state.movie.id}}}><AddReview>AddReview</AddReview></Link> : ''}
                 </MovieInfo>
+                {this.props.signedIn ?
                 <UserOptions>
                         {this.state.favorite.favorite ? 
                         <Icon onClick={this.removeMovieFromFavorites} src='../../../icons/SVG/star-full.svg' alt='In your Favorites' /> : 
@@ -163,6 +164,7 @@ class MoviePage extends Component {
                         <Icon onClick={this.removeMovieFromWatchList} src='../../../icons/SVG/clipboard.svg' alt='In your WatchList' /> : 
                         <Icon onClick={this.handleMovieWatchList} src='../../../icons/SVG/list.svg' alt='Add to WatchList' />}
                 </UserOptions>
+                : '' }
                 <ReviewList>
                     <h2>Reviews:</h2>
                     {reviews}

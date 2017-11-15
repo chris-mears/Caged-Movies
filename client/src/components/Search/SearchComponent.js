@@ -319,7 +319,7 @@ class SearchComponent extends Component {
                         <p>{movie.tag_line}</p>
                     </div>
                     </MovieInfo>
-
+                    {this.props.signedIn ?
                     <UserOptions>
                     {movie.favorite ? 
                         <Icon onClick={() => this.removeMovieFromFavorites(movie.favorite_id)} src='../../../icons/SVG/star-full.svg' alt='In your Favorites' /> : 
@@ -328,6 +328,7 @@ class SearchComponent extends Component {
                         <Icon onClick={() => this.removeMovieFromWatchList(movie.watchlist_movie_id)} src='../../../icons/SVG/clipboard.svg' alt='In your WatchList' /> : 
                         <Icon onClick={() => this.handleMovieWatchList(movie.id)} src='../../../icons/SVG/list.svg' alt='Add to WatchList' />}
                     </UserOptions>
+                    : ''}
                     </Movie>
                 )
             })}</div>

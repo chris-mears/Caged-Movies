@@ -139,6 +139,19 @@ class MainPage extends Component {
         this.getMovies()
     }
 
+    handleMovieWatchList = async (movieId) => {
+        const payload = {
+            movie_id: movieId
+        }
+        const res = await axios.post('/api/watch_list_movies', payload)
+        this.getMovies()
+    }
+
+    removeMovieFromWatchList = async(watchlistId) => {
+        const res= await axios.delete(`/api/watch_list_movies/${watchlistId}`)
+        this.getMovies()
+    }
+
     render() {
 
         const welcome = <WelcomeContainer>
@@ -168,6 +181,9 @@ class MainPage extends Component {
                     {movie.favorite ? 
                         <Icon onClick={() => this.removeMovieFromFavorites(movie.favorite_id)} src='../../../icons/SVG/star-full.svg' alt='In your Favorites' /> : 
                         <Icon onClick={() => this.handleMovieFavorite(movie.id)} src='../../../icons/SVG/star-empty.svg' alt='favorite' />}
+                    {movie.in_watchlist ? 
+                        <Icon onClick={() => this.removeMovieFromWatchList(movie.watchlist_movie_id)} src='../../../icons/SVG/clipboard.svg' alt='In your WatchList' /> : 
+                        <Icon onClick={() => this.handleMovieWatchList(movie.id)} src='../../../icons/SVG/list.svg' alt='Add to WatchList' />}
                     </IconContainer>
                 </Movie>
             })

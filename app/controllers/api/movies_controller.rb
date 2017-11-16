@@ -1,5 +1,5 @@
 class Api::MoviesController < ApplicationController
-  before_action :authenticate_user!, :except => [:index, :show, :search]
+  before_action :authenticate_user!, :except => [:index, :show, :search, :random]
 
   #Index method for Movies
   def index
@@ -183,6 +183,24 @@ class Api::MoviesController < ApplicationController
       }
     end
     render json: {movie: @movie, reviews: @reviews, favorite: result, comments: @comments }
+  end
+
+  def random
+    @movies = Movie.all
+    movies = @movies.map do |movie|
+      {
+        title: movie.title,
+        plot: movie.plot,
+        poster: movie.poster,
+        rating: movie.rating,
+        likes: movie.likes,
+        api_id: movie.api_id,
+        tag_line: movie.tag_line,
+        genre: movie.genre
+      }
+    end
+    @movie = movies.sample
+    render json: @movie
   end
 
   def update

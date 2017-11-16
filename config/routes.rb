@@ -19,7 +19,7 @@ Rails.application.routes.draw do
 
     get "user_reviews", to: "reviews#userindex"
     get "/user", to: "user#show"
-    get "/movies/random", to: "movies#random"
+    get "/random/movie", to: "movies#random"
     get "tmdb_movies", to: "tmdb_api_search#index"
     get "tmdb_movies/:id", to: "tmdb_api_search#show"
   end

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import styled from 'styled-components'
-import {FlexRowCenter, FlexRowBetween} from '../StyledComponents/FlexContainers'
+import {FlexRowCenter, FlexRowBetween, FlexRow} from '../StyledComponents/FlexContainers'
 import { Button } from '../StyledComponents/Button'
 
 import FavoriteMovies from './FavoriteMovies'
@@ -54,8 +54,27 @@ const RandomMovie = styled.div `
     margin: 20px;
     padding: 20px;
     width: 40vw;
+    color: white;
     h3 {
         text-align: center;
+        margin: 0px;
+    }
+    img {
+        height: 200px;
+        margin: 10px;
+    }
+    div {
+        background: #30415D;
+        padding: 5px;
+        a {
+            color: white;
+            text-decoration: none;
+        }
+    }
+`
+const RandomInfo = FlexRow.extend`
+    p {
+        font-size: 1.2em;
     }
 `
 
@@ -135,6 +154,9 @@ class MainPage extends Component {
         favorites: [],
         watchList: [],
         userReviews: [],
+        randomMovie: {
+            title: ''
+        },
         toggleUserFavorites: false,
         toggleUserWatchList: false,
         toggleUserReviews: false
@@ -143,6 +165,7 @@ class MainPage extends Component {
     componentWillMount() {
         this.getMovies()
         this.getReviews()
+        this.getRandomMovie()
     }
 
     getMovies = async() => {
@@ -153,6 +176,11 @@ class MainPage extends Component {
     getReviews = async() => {
         const res = await axios.get('/api/reviews')
         this.setState({reviews: res.data})
+    }
+
+    getRandomMovie = async () => {
+        const res = await axios.get('api/random/movie')
+        this.setState({randomMovie: res.data})
     }
 
     handleMovieFavorite = async (movieId, likes) => {
@@ -226,6 +254,7 @@ class MainPage extends Component {
     }
 
     render() {
+        const randomMovieUrl = this.state.randomMovie.title.toString().replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, '').split(' ').join('-').toLowerCase()
 
         const welcome = <WelcomeContainer>
             <h1>Welcome to Caged Movies</h1>
@@ -296,7 +325,6 @@ class MainPage extends Component {
             </UserContent>
             </div>
         </UserContainer>
-
         const mainContents = <MainContents><TopMovies>
         <h3>Top Movies:</h3>
         {topMovies}
@@ -306,7 +334,19 @@ class MainPage extends Component {
         {recentReviews}
     </RecentPosts>
     <RandomMovie>
-        <h3>Random Movie</h3>
+        <div>
+        <Link to={`/movie/${this.state.randomMovie.id}/${randomMovieUrl}`}>
+        <h3>{this.state.randomMovie.title}</h3>
+        <RandomInfo>
+        <img src={this.state.randomMovie.poster} alt={this.state.randomMovie.title} />
+        <div>
+        <p>{this.state.randomMovie.tag_line}</p>
+        <p>Rating: {this.state.randomMovie.rating}/10</p>
+        <p>Plot: {this.state.randomMovie.plot}</p>
+        </div>
+        </RandomInfo>
+        </Link>
+        </div>
     </RandomMovie>
     <TopPost>
         <h3>Top Posts</h3>

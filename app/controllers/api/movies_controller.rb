@@ -190,6 +190,7 @@ class Api::MoviesController < ApplicationController
     movies = @movies.map do |movie|
       {
         title: movie.title,
+        id: movie.id,
         plot: movie.plot,
         poster: movie.poster,
         rating: movie.rating,

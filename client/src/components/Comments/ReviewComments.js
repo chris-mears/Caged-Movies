@@ -113,13 +113,15 @@ class ReviewComments extends Component {
                                         value={this.state.body}/>
                                 : <p>{comment.body}</p>}
                         </CommentInfo>
-                        <div>
+                            {this.props.signedIn && comment.belongs_to_user ?
+                            <div>
                             <Icon
                                 src='../../../icons/SVG/pencil.svg'
                                 alt='update'
                                 onClick={() => this.updateComment(comment)}/>
                             <Icon src='../../../icons/SVG/bin.svg' alt='delete' onClick={() => this.deleteComment(comment.id)}/>
-                        </div>
+                            </div>
+                            : '' }
                     </Comment>
                 })
         }

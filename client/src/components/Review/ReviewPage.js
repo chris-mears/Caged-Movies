@@ -47,7 +47,7 @@ const ReviewBody = styled.div`
         font-size: 1.4em;
     }
 `
-const ReviewOptions = styled.div`
+const ReviewOptions = FlexRow.extend`
     margin: 30px 0 0 80px;
 `
 
@@ -128,9 +128,9 @@ class ReviewPage extends Component {
                         <div>Rating: {this.state.review.movie.rating}/10</div>
                     </Info>
                 </MovieInfo> 
-            <ReviewOptions>
+            
             {this.props.signedIn ?
-            <div>
+            <ReviewOptions>
             {this.state.review.review_liked ?
             <Icon onClick={this.removeLikeFromReview} src='../../../icons/SVG/heart.svg' alt="liked" /> :
             <Icon onClick={this.handleReviewLike} src='../../../icons/SVG/heart-o.svg' alt="Click to Like" /> }
@@ -140,8 +140,8 @@ class ReviewPage extends Component {
             <Icon id={this.state.review.id} src='../../../icons/SVG/pencil.svg' alt='update' /></Link> 
             <Icon id={this.state.review.id} src='../../../icons/SVG/bin.svg' alt='delete' onClick={this.handleReviewDelete}/>
              </div> : ''}
-             </div> : ''}
-            </ReviewOptions>   
+             </ReviewOptions> : ''}
+               
                 <ReviewBody>
                     <p>{this.state.review.body}</p>
                 </ReviewBody>

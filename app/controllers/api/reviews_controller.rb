@@ -50,11 +50,14 @@ class Api::ReviewsController < ApplicationController
       @review_likes = ReviewLike.where("user_id = ? AND review_id = ?", @user.id, @review.id)
       if @review_likes.empty?
         review_like_id = 'null'
+        review_liked = false
       else
         review_like_id = @review_likes[0].id
+        review_liked = true
       end
     else
       review_like_id = 'null'
+      review_liked = 'null'
     end
 
     review = {
@@ -66,7 +69,7 @@ class Api::ReviewsController < ApplicationController
       movie: @review.movie,
       belongs_to_user: @review.user == @user,
       review_like_id: review_like_id,
-      review_liked: !@review_likes.empty?,
+      review_liked: review_liked
     }
     render json: {review: review, comments: @comments}
   end

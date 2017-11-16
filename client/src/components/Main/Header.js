@@ -37,7 +37,7 @@ const Logo = styled.div `
             align-items: center;
         }
         p {
-            margin-left: 5px;
+            margin: 30px 0 10px 5px;
             font-size: 1.2em;
             color: white;
         }

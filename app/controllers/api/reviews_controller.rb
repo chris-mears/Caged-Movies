@@ -7,6 +7,16 @@ class Api::ReviewsController < ApplicationController
     render json: @reviews, include: [:movie]
   end
 
+  def userindex
+    @user = User
+      .left_joins(:reviews).includes(:reviews)
+      .find(current_user.id)
+
+    reviews = @user.reviews
+
+    render json: reviews
+  end
+
   def search
     @movies = Movie.includes(:reviews).where("title ILIKE ?", "%#{params[:title]}%")
     @reviews = []

@@ -21,6 +21,10 @@ const HeaderButton = Button.extend `
     padding: 0 1rem;
 `
 
+const Username = styled.p`
+    color: white;
+`
+
 const Logo = styled.div `
     font-weight: bolder;
     margin-left: 40px;
@@ -56,7 +60,9 @@ class Header extends Component {
                     </div>
                     </Link></Logo>
                     <SignIn>
-                    {this.props.signedIn ? this.props.nickname : ''}
+                    {this.props.signedIn ? 
+                            <Username>{this.props.nickname}</Username>
+                        : ''}
                     {this.props.signedIn ? signOut : signIn}
                     </SignIn>
                 </HeaderContainer>

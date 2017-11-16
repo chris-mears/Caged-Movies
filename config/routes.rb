@@ -11,12 +11,13 @@ Rails.application.routes.draw do
       get 'search', on: :collection
       get 'search_tmdb', on: :collection
     end
-    resources :favorite_movies, only: [:create, :destroy]
-    resources :watch_list_movies, only: [:create, :destroy]
+    resources :favorite_movies, only: [:index, :create, :destroy]
+    resources :watch_list_movies, only: [:index, :create, :destroy]
     resources :movie_comment, only: [:create, :destroy, :update]
     resources :review_likes, only: [:create, :destroy]
     resources :review_comments, only: [:create, :destroy, :update]
 
+    get "user_reviews", to: "reviews#userindex"
     get "/user", to: "user#show"
     get "tmdb_movies", to: "tmdb_api_search#index"
     get "tmdb_movies/:id", to: "tmdb_api_search#show"

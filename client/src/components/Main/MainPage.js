@@ -3,11 +3,17 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 import styled from 'styled-components'
 import {FlexRowCenter, FlexRowBetween} from '../StyledComponents/FlexContainers'
+import { Button } from '../StyledComponents/Button'
+
+import FavoriteMovies from './FavoriteMovies'
+import WatchList from './WatchList'
+import UserReviews from './UserReviews'
 
 const HeroUserContainer = FlexRowCenter.extend `
     padding-top:80px;
     width: 100%;
     height: 35vh;
+    min-height: 250px;
     color: #cf6766;
     background: #30415D;
 `
@@ -105,10 +111,33 @@ const Icon = styled.img`
 margin: 0 20px;
 `
 
+const UserContainer = FlexRowCenter.extend`
+    img{
+        height: 200px;
+        border-radius: 100px;
+    }
+    div{
+        width: 70vw;
+        margin-left: 10px;
+    }
+`
+
+const UserContent = FlexRowCenter.extend`
+`
+const ContentButton = Button.extend`
+`
+const ContentsContainer = styled.div``
+
 class MainPage extends Component {
     state = {
         movies: [],
-        reviews: []
+        reviews: [],
+        favorites: [],
+        watchList: [],
+        userReviews: [],
+        toggleUserFavorites: false,
+        toggleUserWatchList: false,
+        toggleUserReviews: false
     }
 
     componentWillMount() {
@@ -158,6 +187,42 @@ class MainPage extends Component {
     removeMovieFromWatchList = async(watchlistId) => {
         const res= await axios.delete(`/api/watch_list_movies/${watchlistId}`)
         this.getMovies()
+    }
+
+    showFavoriteMovies = async () => {
+        await this.setState({
+            toggleUserFavorites: !this.state.toggleUserFavorites,
+            toggleUserWatchList: false,
+            toggleUserReviews: false
+        })
+        if(this.state.toggleUserFavorites) {
+            const res = await axios.get('/api/favorite_movies')
+            this.setState({favorites: res.data})
+        }
+    }
+
+    showWatchList = async () => {
+        await this.setState({
+            toggleUserFavorites: false,
+            toggleUserWatchList: !this.state.toggleUserWatchList,
+            toggleUserReviews: false
+        })
+        if(this.state.toggleUserWatchList) {
+            const res = await axios.get('/api/watch_list_movies')
+            this.setState({watchList: res.data})
+        }
+    }
+
+    showReviews = async () => {
+        await this.setState({
+            toggleUserFavorites: false,
+            toggleUserWatchList: false,
+            toggleUserReviews: !this.state.toggleUserReviews
+        })
+        if(this.state.toggleUserReviews) {
+            const res = await axios.get('/api/user_reviews')
+            this.setState({userReviews: res.data})
+        }
     }
 
     render() {
@@ -210,11 +275,47 @@ class MainPage extends Component {
             {/* <img src='../../../Logo_white.png' alt='caged movies' /> */}
             For those movies, so bad you hate to love them!
         </Cage>
+
+        const UserInfo = <UserContainer>
+            <img src={this.props.userInfo.image} alt={this.props.userInfo.name} />
+            <div>
+            <h2>{this.props.userInfo.name}</h2>
+            <hr/>
+            <h4>{this.props.userInfo.nickname}</h4>
+            <UserContent>
+                    <ContentButton onClick={this.showFavoriteMovies}>
+                    {this.state.toggleUserFavorites ?
+                    "Return" : "Favorites" }
+                    </ContentButton>
+                    <ContentButton onClick={this.showWatchList}>
+                    {this.state.toggleUserWatchList ?
+                    "Return" : "Watch List" }</ContentButton>
+                    <ContentButton onClick={this.showReviews}>
+                    {this.state.toggleUserReviews ?
+                    "Return" : "Reviews" }</ContentButton>
+            </UserContent>
+            </div>
+        </UserContainer>
+
+        const mainContents = <MainContents><TopMovies>
+        <h3>Top Movies:</h3>
+        {topMovies}
+    </TopMovies>
+    <RecentPosts>
+        <h3>Recent Posts:</h3>
+        {recentReviews}
+    </RecentPosts>
+    <RandomMovie>
+        <h3>Random Movie</h3>
+    </RandomMovie>
+    <TopPost>
+        <h3>Top Posts</h3>
+    </TopPost></MainContents>
         return (
             <div>
                 <HeroUserContainer>
                     {this.props.signedIn
-                        ? <h1>UserInfo</h1>
+                        ? UserInfo
                         : HeroBanner}
                 </HeroUserContainer>
 
@@ -222,23 +323,19 @@ class MainPage extends Component {
                     ? ''
                     : welcome}
 
-                <MainContents>
-                    <TopMovies>
-                        <h3>Top Movies:</h3>
-                        {topMovies}
-                    </TopMovies>
-                    <RecentPosts>
-                        <h3>Recent Posts:</h3>
-                        {recentReviews}
-                    </RecentPosts>
-                    <RandomMovie>
-                        <h3>Random Movie</h3>
-                    </RandomMovie>
-                    <TopPost>
-                        <h3>Top Posts</h3>
-                    </TopPost>
-
-                </MainContents>
+                <ContentsContainer>
+                    {this.state.toggleUserFavorites || this.state.toggleUserWatchList || this.state.toggleUserReviews ?
+                    "" : mainContents}
+                    {this.state.toggleUserFavorites ? 
+                     <FavoriteMovies movies={this.state.favorites}/>
+                     : ''}
+                    {this.state.toggleUserWatchList ? 
+                     <WatchList watchlist={this.state.watchList} />
+                     : ''}
+                    {this.state.toggleUserReviews ? 
+                     <UserReviews reviews={this.state.userReviews} />
+                     : ''}
+                </ContentsContainer>
             </div>
         );
     }

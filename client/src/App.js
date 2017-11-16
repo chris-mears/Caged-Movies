@@ -26,8 +26,11 @@ class App extends Component {
     state = {
         signedIn: false,
         toggleRedirect: false,
-        user: {}
+        user: {
+            nickname: ''
+            }
     }
+
 
     async componentWillMount() {
       try {
@@ -116,7 +119,8 @@ class App extends Component {
         const HomePageComponent = () => (
             <MainPage
             user={this.state.user}
-            signedIn={this.state.signedIn} />
+            signedIn={this.state.signedIn}
+            userInfo={this.state.user} />
         )
         
 

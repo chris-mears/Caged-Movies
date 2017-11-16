@@ -4,6 +4,7 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 
 import { FlexRow, FlexRowBetween } from '../StyledComponents/FlexContainers'
+import MovieComments from '../Comments/MovieComments'
 
 
 const MovieInfo = FlexRow.extend `
@@ -31,6 +32,7 @@ const ReviewList = styled.div`
     margin: 20px;
 `
 
+
 const Review = FlexRowBetween.extend`
     border: 1px solid #30415D;
     margin: 20px;
@@ -56,7 +58,8 @@ class MoviePage extends Component {
         reviews: [],
         favorite: {
             favorite: false,
-        }
+        },
+        comments: []
     }
 
     componentWillMount() {
@@ -73,7 +76,7 @@ class MoviePage extends Component {
     getMovie = async (movieId) => {
         try {
             const res = await axios.get(`/api/movies/${movieId}`)
-            this.setState({movie: res.data.movie, reviews: res.data.reviews, favorite: res.data.favorite})
+            this.setState({movie: res.data.movie, reviews: res.data.reviews, favorite: res.data.favorite, comments: res.data.comments})
         } catch (err) {
             console.log(err)
         }
@@ -173,10 +176,14 @@ class MoviePage extends Component {
                     <h2>Reviews:</h2>
                     {reviews}
                 </ReviewList>
+                    <MovieComments 
+                    comments={this.state.comments} 
+                    movieId={this.state.movie.id} 
+                    signedIn={this.props.signedIn} 
+                    getMovie={this.getMovie} />
             </div>
         );
     }
 }
 
 export default MoviePage
-;

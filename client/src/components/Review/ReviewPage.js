@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom'
 
 import { FlexRow } from '../StyledComponents/FlexContainers'
 import { Link } from 'react-router-dom';
+import ReviewComments from '../Comments/ReviewComments'
 
 
 const MovieInfo = FlexRow.extend `
@@ -57,6 +58,7 @@ class ReviewPage extends Component {
                 title: ''
             }
         },
+        comments: [],
         toggleRedirect: false
     }
 
@@ -72,7 +74,7 @@ class ReviewPage extends Component {
 
     getReview = async (reviewId) => {
         const res = await axios.get(`/api/reviews/${reviewId}`)
-        this.setState({review: res.data})
+        this.setState({review: res.data.review, comments: res.data.comments})
     }
 
     handleReviewDelete = async (event) => {
@@ -143,6 +145,11 @@ class ReviewPage extends Component {
                 <ReviewBody>
                     <p>{this.state.review.body}</p>
                 </ReviewBody>
+                <ReviewComments 
+                comments={this.state.comments} 
+                reviewId={this.state.review.id}
+                signedIn={this.props.signedIn}
+                getReview={this.getReview} />
             </div>
         );
     }

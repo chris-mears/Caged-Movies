@@ -152,6 +152,7 @@ class Api::MoviesController < ApplicationController
         belongs_to_user: belongs_to_user
       }
     end
+    @comments.reverse!
     if @user != nil
       @favorite = FavoriteMovie.where("user_id = ? AND movie_id = ?", @user.id, @movie.id)
       @watchlist = WatchListMovie.where("user_id = ? AND movie_id = ?", @user.id, @movie.id)
@@ -181,7 +182,7 @@ class Api::MoviesController < ApplicationController
         watchlist_id: 'null'
       }
     end
-    render json: {movie: @movie, reviews: @reviews, favorite: result, comments:@comments }
+    render json: {movie: @movie, reviews: @reviews, favorite: result, comments: @comments }
   end
 
   def update

@@ -67,9 +67,8 @@ class Api::ReviewsController < ApplicationController
       belongs_to_user: @review.user == @user,
       review_like_id: review_like_id,
       review_liked: !@review_likes.empty?,
-      comments: @comments
     }
-    render json: review
+    render json: {review: review, comments: @comments}
   end
 
   def create

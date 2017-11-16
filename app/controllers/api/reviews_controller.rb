@@ -29,7 +29,23 @@ class Api::ReviewsController < ApplicationController
 
   def show
     @user = current_user
-    @review = Review.includes(:movie).find(params[:id])
+    @review = Review.joins(:movie).includes(:movie)
+      .find_by_id(params[:id])
+
+    @comments = @review.review_comments.map do |comment|
+      if @user != nil
+        belongs_to_user = @user.id == comment.user_id
+      else
+        belongs_to_user = false
+      end
+      {
+        id: comment.id,
+        body: comment.body,
+        author: comment.user.nickname,
+        author_image: comment.user.image,
+        belongs_to_user: belongs_to_user
+      }
+    end
     if @user != nil
       @review_likes = ReviewLike.where("user_id = ? AND review_id = ?", @user.id, @review.id)
       if @review_likes.empty?
@@ -50,7 +66,8 @@ class Api::ReviewsController < ApplicationController
       movie: @review.movie,
       belongs_to_user: @review.user == @user,
       review_like_id: review_like_id,
-      review_liked: !@review_likes.empty?
+      review_liked: !@review_likes.empty?,
+      comments: @comments
     }
     render json: review
   end

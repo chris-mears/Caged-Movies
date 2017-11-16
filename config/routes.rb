@@ -13,7 +13,7 @@ Rails.application.routes.draw do
     end
     resources :favorite_movies, only: [:index, :create, :destroy]
     resources :watch_list_movies, only: [:index, :create, :destroy]
-    resources :movie_comment, only: [:create, :destroy, :update]
+    resources :movie_comments, only: [:create, :destroy, :update]
     resources :review_likes, only: [:create, :destroy]
     resources :review_comments, only: [:create, :destroy, :update]
 

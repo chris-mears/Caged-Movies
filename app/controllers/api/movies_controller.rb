@@ -125,7 +125,10 @@ class Api::MoviesController < ApplicationController
 
   def show
     @user = current_user
-    @movie = Movie.includes(:reviews).find_by_id(params[:id])
+    @movie = Movie
+      .left_joins(:reviews).includes(:reviews)
+      .left_joins(:movie_comments).includes(:movie_comments)
+      .find_by_id(params[:id])
     @reviews = []
     @movie.reviews.each do |review|
       hash = {
@@ -134,6 +137,20 @@ class Api::MoviesController < ApplicationController
         belongs_to_user: review.user == @user
       }
       @reviews << hash
+    end
+    @comments = @movie.movie_comments.map do |comment|
+      if @user != nil
+        belongs_to_user = @user.id == comment.user_id
+      else
+        belongs_to_user = false
+      end
+      {
+        id: comment.id,
+        body: comment.body,
+        author: comment.user.nickname,
+        author_image: comment.user.image,
+        belongs_to_user: belongs_to_user
+      }
     end
     if @user != nil
       @favorite = FavoriteMovie.where("user_id = ? AND movie_id = ?", @user.id, @movie.id)
@@ -164,7 +181,7 @@ class Api::MoviesController < ApplicationController
         watchlist_id: 'null'
       }
     end
-    render json: {movie: @movie, reviews: @reviews, favorite: result}
+    render json: {movie: @movie, reviews: @reviews, favorite: result, comments:@comments }
   end
 
   def update

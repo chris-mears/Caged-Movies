@@ -55,7 +55,7 @@ class Header extends Component {
         return (
                 <HeaderContainer>
                     <Logo onClick={this.props.handleLogoClick}><Link to="/"><div>
-                    <img src="../../../Logo_white.png" alt="caged Movies" />
+                    <img src="../../../Logo.png" alt="caged Movies" />
                     <p>Caged Movies</p>
                     </div>
                     </Link></Logo>

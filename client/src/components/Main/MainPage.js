@@ -405,16 +405,16 @@ class MainPage extends Component {
                     : welcome}
 
                 <ContentsContainer>
-                    {this.state.toggleUserFavorites || this.state.toggleUserWatchList || this.state.toggleUserReviews
+                    {(this.state.toggleUserFavorites || this.state.toggleUserWatchList || this.state.toggleUserReviews) && this.props.signedIn
                         ? ""
                         : mainContents}
-                    {this.state.toggleUserFavorites
+                    {this.state.toggleUserFavorites && this.props.signedIn
                         ? <FavoriteMovies movies={this.state.favorites}/>
                         : ''}
-                    {this.state.toggleUserWatchList
+                    {this.state.toggleUserWatchList && this.props.signedIn
                         ? <WatchList watchlist={this.state.watchList}/>
                         : ''}
-                    {this.state.toggleUserReviews
+                    {this.state.toggleUserReviews && this.props.signedIn
                         ? <UserReviews reviews={this.state.userReviews}/>
                         : ''}
                 </ContentsContainer>

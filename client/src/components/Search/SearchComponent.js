@@ -70,6 +70,8 @@ const SearchWrapper = styled.div`
     overflow: scroll;
 `
 const OptionButton = Button.extend`
+    background: #CF6766;
+    color: #031424;
 `
 
 const SearchResults = styled.div `
@@ -114,6 +116,11 @@ const Review = styled.div`
     h4, p {
         margin: 5px;
     }
+    h4 {
+        a {
+            color: white;
+        }
+    }
 `
 
 const Title = styled.div`
@@ -127,6 +134,13 @@ const Title = styled.div`
 `
 
 const MovieInfo = FlexRow.extend`
+    div {
+        h4 {
+            a {
+                color: white;
+            }
+        }
+    }
 `
 
 const UserOptions = styled.div`

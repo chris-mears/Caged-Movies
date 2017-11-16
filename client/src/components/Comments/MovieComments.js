@@ -45,6 +45,10 @@ margin: 20px;
 const Icon = styled.img `
 margin: 0 20px;
 `
+const AddButton = Button.extend`
+  background: #CF6766;
+  color: #031424;     
+`
 
 class MovieComments extends Component {
     state = {
@@ -135,9 +139,9 @@ class MovieComments extends Component {
                 <CommentHeader>
                     <h2>Comments:</h2>
                     {this.props.signedIn
-                        ? <Button onClick={this.showNewComment}>{this.state.toggleNew
+                        ? <AddButton onClick={this.showNewComment}>{this.state.toggleNew
                                     ? 'Save'
-                                    : 'Add Comment'}</Button>
+                                    : 'Add Comment'}</AddButton>
                         : ''}
                 </CommentHeader>
                 {this.state.toggleNew

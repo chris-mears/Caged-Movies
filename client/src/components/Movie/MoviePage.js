@@ -38,13 +38,16 @@ const Review = FlexRowBetween.extend`
     margin: 20px;
     font-size: 1.6em;
     padding: 20px 60px;
+    a {
+        color: black;
+    }
 `
 
 const AddReview = styled.div`
     font-size: 2em;
 `
 const Icon = styled.img`
-    margin: 0 20px;
+    margin: 20px;
 `
 const UserOptions = FlexRow.extend`
     h5 {
@@ -154,13 +157,13 @@ class MoviePage extends Component {
                 <MovieInfo>
                     <img src={this.state.movie.poster} alt={this.state.movie.title} />
                     <Info>
-                        <div>{this.state.movie.title}</div>
+                        <div><h1>{this.state.movie.title}</h1></div>
                         <div><p>{this.state.movie.tag_line}</p></div>
                         <div>Rating: {this.state.movie.rating}/10</div>
                         <div><h5>Overview</h5><p>{this.state.movie.plot}</p></div>
                     </Info>
                     {this.props.signedIn ? 
-                    <Link to={{ pathname: '/newReview', state:{id: this.state.movie.id}}}><AddReview>AddReview</AddReview></Link> : ''}
+                    <Link to={{ pathname: '/newReview', state:{id: this.state.movie.id}}}><Icon src='../../../icons/SVG/plus.svg' /></Link> : ''}
                 </MovieInfo>
                 {this.props.signedIn ?
                 <UserOptions>

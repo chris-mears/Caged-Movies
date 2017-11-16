@@ -145,6 +145,8 @@ const UserContainer = FlexRowCenter.extend `
 const UserContent = FlexRowCenter.extend `
 `
 const ContentButton = Button.extend `
+    background: #CF6766;
+    color: #031424; 
 `
 const ContentsContainer = styled.div ``
 

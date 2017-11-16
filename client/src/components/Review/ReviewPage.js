@@ -24,6 +24,9 @@ const Info = styled.div`
     font-size: 1.2em;
     div {
         margin: 5px;
+        a {
+            color: white;
+        }
     }
     p {
         font-size: .8em;
@@ -123,7 +126,7 @@ class ReviewPage extends Component {
                     <img src={this.state.review.movie.poster} alt={this.state.review.movie.title} />
                     <Info>
                         <div><Link to={`/movie/${this.state.review.movie.id}/${movieUrl}`}>
-                        {this.state.review.movie.title}</Link></div>
+                        <h1>{this.state.review.movie.title}</h1></Link></div>
                         <div><p>{this.state.review.movie.tag_line}...</p></div>
                         <div>Rating: {this.state.review.movie.rating}/10</div>
                     </Info>

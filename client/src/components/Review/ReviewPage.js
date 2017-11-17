@@ -6,6 +6,7 @@ import { Redirect } from 'react-router-dom'
 import { FlexRow } from '../StyledComponents/FlexContainers'
 import { Link } from 'react-router-dom';
 import ReviewComments from '../Comments/ReviewComments'
+import { Icon } from '../StyledComponents/Icon'
 
 
 const MovieInfo = FlexRow.extend `
@@ -48,10 +49,6 @@ const Info = styled.div`
             margin: 5px;
         }
     }
-`
-
-const Icon = styled.img`
-margin: 0 20px;
 `
 
 const Title = styled.div`
@@ -135,7 +132,7 @@ class ReviewPage extends Component {
             return <Redirect to='/' />
         }
         const movieUrl = this.state.review.movie.title
-        .replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, '')
+        .replace(/[&/\\#,+()$~%.'":*?<>{}]/g, '')
         .split(' ')
         .join('-')
         .toLowerCase()

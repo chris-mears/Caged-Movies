@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 
 import { FlexRow, FlexRowBetween } from '../StyledComponents/FlexContainers'
 import MovieComments from '../Comments/MovieComments'
+import MovieReviews from '../Review/MovieReviews'
 
 
 const MovieInfo = FlexRow.extend `
@@ -46,19 +47,7 @@ const ReviewList = styled.div`
 `
 
 
-const Review = FlexRowBetween.extend`
-    border: 1px solid #30415D;
-    margin: 20px;
-    font-size: 1.6em;
-    padding: 20px 60px;
-    a {
-        color: black;
-    }
-    @media (max-width: 500px) {
-        font-size: 1em;
-        margin: 5px;
-    }
-`
+
 
 const AddIcon = styled.img`
     margin: 20px;
@@ -101,7 +90,6 @@ class MoviePage extends Component {
 
     componentWillReceiveProps(newProps) {
         const { movieId } = newProps.match.params
-        console.log(movieId)
         this.getMovie(movieId)
     }
 
@@ -170,16 +158,10 @@ class MoviePage extends Component {
             reviews = <h3>No Reviews Yet. Login to create Review</h3>
         } else {
             reviews =  this.state.reviews.map((review) => {
-                return <Review key={review.id}>
-                <Link to={`/review/${review.id}`}>
-                {review.title}</Link><div>
-                {this.props.signedIn && review.belongs_to_user ? 
-                <div>
-                <Link to={`/updatereview/${review.id}`} >
-                <Icon src='../../../icons/SVG/pencil.svg' alt='update' /></Link> 
-                <Icon src='../../../icons/SVG/bin.svg' alt='delete' onClick={() => this.handleReviewDelete(review.id)}/> 
-                </div> : ''}
-                </div></Review>
+                return <MovieReviews review={review} 
+                key={review.id}
+                singedIn={this.props.signedIn}
+                handleReviewDelete={this.handleReviewDelete} />
         })}
         return (
             <div>

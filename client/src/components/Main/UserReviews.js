@@ -16,7 +16,7 @@ color: white;
         color: white;
     }
 `
-
+//componet to allow user to see a list of their review
 class UserReviews extends Component {
     render() {
         return (

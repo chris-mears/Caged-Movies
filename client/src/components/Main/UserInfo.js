@@ -31,7 +31,7 @@ const ContentButton = Button.extend `
 background: #CF6766;
 color: #031424; 
 `
-
+//component to display user info on main page
 const UserInfo = (props) => {
     return (
         <UserContainer>

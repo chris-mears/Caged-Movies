@@ -76,6 +76,7 @@ class ReviewComments extends Component {
         updateCommentId: 0
     }
 
+    //Will toggle view for new comment input and will save to db when user clicks save
     showNewComment = async() => {
         this.setState({
             toggleNew: !this.state.toggleNew
@@ -91,6 +92,7 @@ class ReviewComments extends Component {
         }
     }
 
+    //will toggle update comment input and will save to db when user clicks again
     updateComment = async (comment) => {
         this.setState({
             toggleUpdate: !this.state.toggleUpdate
@@ -107,11 +109,13 @@ class ReviewComments extends Component {
         }
     }
 
+    //will delete a comment from db
     deleteComment = async (id) => {
         await axios.delete(`/api/review_comments/${id}`)
         this.props.getReview(this.props.reviewId)
     }
 
+    //will update state of input content
     handleChange = (event) => {
         const body = event.target.value
         this.setState({body})

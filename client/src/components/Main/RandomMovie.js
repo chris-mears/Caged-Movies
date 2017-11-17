@@ -36,7 +36,7 @@ p {
     font-size: 1.2em;
 }
 `
-
+//component for random movie on main page
 const RandomMovie = (props) => {
     return (
         <Movie>

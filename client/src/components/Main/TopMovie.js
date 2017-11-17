@@ -16,7 +16,7 @@ a {
 `
 const IconContainer = FlexRowCenter.extend `
 `
-
+//component for the top movie list on the main page
 class TopMovie extends Component {
     render() {
         return (

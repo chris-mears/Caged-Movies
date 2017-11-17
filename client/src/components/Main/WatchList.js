@@ -21,7 +21,7 @@ const MovieInfo = styled.div`
         color: white;
     }
 `
-
+//Component for user's watchlist to view
 class WatchList extends Component {
     render() {
         return (

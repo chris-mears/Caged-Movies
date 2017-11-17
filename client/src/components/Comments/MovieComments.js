@@ -46,6 +46,7 @@ margin: 20px;
 
 }
 `
+
 const BodyUpdateField = styled.textarea `
 width: 70vw;
 height: 12vh;
@@ -76,6 +77,7 @@ class MovieComments extends Component {
         updateCommentId: 0
     }
 
+    //When you click Add comment this will toggle the input visible and if toggleNew is true when you click save will save comment to db
     showNewComment = async() => {
         this.setState({
             toggleNew: !this.state.toggleNew
@@ -93,6 +95,7 @@ class MovieComments extends Component {
         }
     }
 
+    //Will toggle comment input and will save to db on click again then will grab movie again to put in state
     updateComment = async (comment) => {
         this.setState({
             toggleUpdate: !this.state.toggleUpdate
@@ -109,11 +112,14 @@ class MovieComments extends Component {
         }
     }
 
+
+    //Will Delete the comment
     deleteComment = async (id) => {
         await axios.delete(`/api/movie_comments/${id}`)
         this.props.getMovie(this.props.movieId)
     }
 
+    //Will update the input state for comments
     handleChange = (event) => {
         const body = event.target.value
         this.setState({body})

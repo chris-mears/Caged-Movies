@@ -141,11 +141,13 @@ class MainPage extends Component {
         this.getRandomMovie()
     }
 
+    //will grab all movies from db comes in ordered by likes
     getMovies = async() => {
         const res = await axios.get('/api/movies/')
         this.setState({movies: res.data})
     }
 
+    //will grab reviews from db comes in order by most recent
     getReviews = async() => {
         const res = await axios.get('/api/reviews')
         await this.setState({reviews: res.data})
@@ -154,11 +156,13 @@ class MainPage extends Component {
         this.setState({TopReviews})
     }
 
+    //will grab a random movie from the db
     getRandomMovie = async() => {
         const res = await axios.get('api/random/movie')
         this.setState({randomMovie: res.data})
     }
 
+    //allows user to favorite a movie and update likes for the movie
     handleMovieFavorite = async(movieId, likes) => {
         const payload = {
             movie_id: movieId
@@ -171,6 +175,7 @@ class MainPage extends Component {
         this.getMovies()
     }
 
+    //allows user to remove movie from favorites and updates movie to remove one like
     removeMovieFromFavorites = async(favoriteId, movieId, likes) => {
         await axios.delete(`/api/favorite_movies/${favoriteId}`)
         const moviePayload = {
@@ -180,6 +185,7 @@ class MainPage extends Component {
         this.getMovies()
     }
 
+    //allows user to add movie to watchlist
     handleMovieWatchList = async(movieId) => {
         const payload = {
             movie_id: movieId
@@ -188,11 +194,13 @@ class MainPage extends Component {
         this.getMovies()
     }
 
+    //allows user to remove movie from watchlist
     removeMovieFromWatchList = async(watchlistId) => {
         const res = await axios.delete(`/api/watch_list_movies/${watchlistId}`)
         this.getMovies()
     }
 
+    //allows user to see favorite movies and grabs them from db
     showFavoriteMovies = async() => {
         await this.setState({
             toggleUserFavorites: !this.state.toggleUserFavorites,
@@ -205,6 +213,7 @@ class MainPage extends Component {
         }
     }
 
+    //allows user to see watch list and grabs them from db
     showWatchList = async() => {
         await this.setState({
             toggleUserFavorites: false,
@@ -217,6 +226,7 @@ class MainPage extends Component {
         }
     }
 
+    //allows user to see their reviews and grabs them from the db
     showReviews = async() => {
         await this.setState({
             toggleUserFavorites: false,

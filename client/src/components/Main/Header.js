@@ -61,7 +61,7 @@ const Logo = styled.div `
         height: 25px;
     }
     }
-
+    }
 `
 const SignIn = FlexRowCenter.extend``
 

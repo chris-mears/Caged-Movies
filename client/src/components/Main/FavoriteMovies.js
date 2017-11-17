@@ -21,7 +21,7 @@ const MovieInfo = styled.div`
         color: white;
     }
 `
-
+//component to dsiplay user favorite movies list
 class FavoriteMovies extends Component {
     render() {
         return (

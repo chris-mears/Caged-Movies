@@ -6,6 +6,8 @@ import {FlexRow, FlexRowCenter, FlexColumn, FlexRowBetween} from '../StyledCompo
 import {Button} from '../StyledComponents/Button'
 import ApiMovie from '../Movie/ApiMovie'
 
+import FullScreenSearch from './FullScreenSearch'
+
 const SearchDiv = FlexRow.extend `
 background-color: #fafafa;
 border: 1px solid #dbdbdb;
@@ -13,9 +15,7 @@ height: 25px;
 color: #999;
 `
 
-const ActiveSearchDiv = SearchDiv.extend `
-    height: 50px;
-`
+
 
 const Search = styled.input `
 border: none;
@@ -34,16 +34,7 @@ height: 100%;
 width: 100%;
 `
 
-const ActiveSearch = Search.extend `
-    font-weight: 800;
-    font-size: 1.6em;
-    :focus{
-    outline: none;
-    @media (max-width: 600px) {
-        font-size: .8em
-    }
 
-`
 const Icon = styled.img `
 margin: 0 10px 0 40px;
 height: 20px;
@@ -81,68 +72,6 @@ margin-right: 100px;
 }
 `
 
-const FullScreen = styled.div `
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-overflow: auto;
-z-index: 10;
-background-color: rgba(254,254,254,0.7);
-`
-
-const SearchWrapper = styled.div`
-    overflow: scroll;
-`
-const OptionButton = Button.extend`
-    background: #CF6766;
-    color: #031424;
-`
-
-const SearchResults = styled.div `
-    display: flex;
-    margin: 20px 40px;
-    border: 3px solid #30415D;
-    padding: 15px;
-    min-height: 85vh;
-    @media (max-width: 600px) {
-    flex-direction: column;
-    width: auto;
-    height: auto;
-    margin: 5px;
-    padding: 5px;
-}
-`
-
-const SearchOptions = FlexColumn.extend`
-    background-color: rgba(3,20,36,0.95);
-    color: white;
-    padding: 10px;
-    margin-right: 40px;
-    height: 80vh;
-    width: 20vw;
-    @media (max-width: 600px) {
-        flex-direction: row;
-        width: auto;
-        height: auto;
-        align-items: center;
-        justify-content: center;
-        margin: 10px 5px;
-    }
-`
-
-const ResultsContainer = styled.div`
-    background-color: rgba(3,20,36,0.95);
-    padding: 10px;
-    min-height: 85vh;
-    color: white;
-    width: 75vw;
-    @media (max-width: 600px) {
-        width: auto;
-        margin: 5px;
-    }
-`
 const Movie = FlexRowBetween.extend`
     border: 1px solid white;
     margin: 10px 0;
@@ -356,7 +285,7 @@ class SearchComponent extends Component {
             movies = <div><h3>Movies:</h3>
             <div>{this.state.results.movies.map((movie)=> {
                 const MovieUrl = movie.title
-                .replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, '')
+                .replace(/[&/\\#,+()$~%.'":*?<>{}]/g, '')
                 .split(' ')
                 .join('-')
                 .toLowerCase()
@@ -389,7 +318,7 @@ class SearchComponent extends Component {
             apiMovies = <div><h3>TMDB Movies:</h3>
             <div>{this.state.apiResults.map((movie)=> {
                 const MovieUrl = movie.title
-                .replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, '')
+                .replace(/[&/\\#,+()$~%.'":*?<>{}]/g, '')
                 .split(' ')
                 .join('-')
                 .toLowerCase()
@@ -429,38 +358,21 @@ class SearchComponent extends Component {
         }
         
 
-        const fullScreenSearch = <FullScreen onKeyPress={this.handleKeyPress}>
-        <SearchWrapper>
-            <ActiveSearchDiv>
-                <ActiveIcon src='../../../icons/SVG/search.svg' alt="search"/>
-                <ActiveSearch
-                    autoFocus
-                    type="text"
-                    placeholder="Search for Movie and hit enter"
-                    onChange={this.handleChange}
-                    value={this.state.searchInput}/>
-                <CancelIcon
-                    src='../../../icons/SVG/cancel-circle.svg'
-                    alt="Cancel Search"
-                    onClick={this.handleCancel}/>
-            </ActiveSearchDiv>
-            <SearchResults>
-                <SearchOptions>
-                    <OptionButton onClick={this.toggleMoviesSearch}>Movies</OptionButton>
-                    <OptionButton onClick={this.toggleReviewsSearch}>Reviews</OptionButton>
-                    <OptionButton onClick={this.toggleGenreSearch}>Genres</OptionButton>
-                </SearchOptions>
-                <ResultsContainer>
-                    {titleView}
-                    {this.state.message !== '' ? message : ''}
-                    {results}
-                </ResultsContainer>
-            </SearchResults>
-        </SearchWrapper>
-        </FullScreen>
 
         const searchBar = this.state.toggleSearch
-            ? fullScreenSearch
+            ? <FullScreenSearch 
+            titleView={titleView}
+            message={message}
+            results={results}
+            stateMessage={this.state.message}
+            handleKeyPress={this.handleKeyPress}
+            handleChange={this.handleChange}
+            searchInput={this.state.searchInput}
+            handleCancel={this.handleCancel}
+            toggleMoviesSearch={this.toggleMoviesSearch}
+            toggleReviewsSearch={this.toggleReviewsSearch}
+            toggleGenreSearch={this.toggleGenreSearch}
+            />
             : <SearchDiv>
                 <Icon src='../../../icons/SVG/search.svg' alt="search"/>
                 <Search type="text" placeholder="Search" onClick={this.handleClick}/>

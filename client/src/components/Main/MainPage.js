@@ -4,10 +4,14 @@ import axios from 'axios'
 import styled from 'styled-components'
 import {FlexRowCenter, FlexRowBetween, FlexRow} from '../StyledComponents/FlexContainers'
 import {Button} from '../StyledComponents/Button'
+import {Icon} from '../StyledComponents/Icon'
 
 import FavoriteMovies from './FavoriteMovies'
 import WatchList from './WatchList'
 import UserReviews from './UserReviews'
+import TopMovie from './TopMovie'
+import UserInfo from './UserInfo'
+import RandomMovie from './RandomMovie.js'
 
 const HeroUserContainer = FlexRowCenter.extend `
     padding-top:80px;
@@ -58,39 +62,7 @@ const RecentPosts = styled.div `
         width: auto;
     }
 `
-const RandomMovie = styled.div `
-    border: 3px solid #30415D;
-    margin: 20px;
-    padding: 20px;
-    width: 40vw;
-    color: white;
-    h3 {
-        text-align: center;
-        margin: 0px;
-    }
-    img {
-        height: 200px;
-        margin: 10px;
-    }
-    div {
-        background: #30415D;
-        padding: 5px;
-        a {
-            color: white;
-            text-decoration: none;
-        }
-    }
-    @media (max-width: 850px) {
-        margin: 5px;
-        padding: 5px;
-        width: auto;
-    }
-`
-const RandomInfo = FlexRow.extend `
-    p {
-        font-size: 1.2em;
-    }
-`
+
 
 const TopPost = styled.div `
     border: 3px solid #30415D;
@@ -145,39 +117,6 @@ const Cage = FlexRowCenter.extend `
 const IconContainer = FlexRowCenter.extend `
 `
 
-const Icon = styled.img `
-margin: 0 20px;
-`
-
-const UserContainer = FlexRowCenter.extend `
-    img{
-        height: 200px;
-        border-radius: 100px;
-    }
-    div{
-        width: 70vw;
-        margin-left: 10px;
-    }
-    @media (max-width: 750px) {
-        flex-direction: column;
-        width: auto;
-        img{
-            height: 150px;
-            border-radius: 75px;
-        }
-        div{
-            width: auto;
-            margin-left: 5px;
-        }
-    }
-`
-
-const UserContent = FlexRowCenter.extend `
-`
-const ContentButton = Button.extend `
-    background: #CF6766;
-    color: #031424; 
-`
 const ContentsContainer = styled.div ``
 
 class MainPage extends Component {
@@ -296,7 +235,7 @@ class MainPage extends Component {
             .randomMovie
             .title
             .toString()
-            .replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, '')
+            .replace(/[&/\\#,+()$~%.'":*?<>{}]/g, '')
             .split(' ')
             .join('-')
             .toLowerCase()
@@ -317,36 +256,21 @@ class MainPage extends Component {
             .map((movie, index) => {
                 const MovieUrl = movie
                     .title
-                    .replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, '')
+                    .replace(/[&/\\#,+()$~%.'":*?<>{}]/g, '')
                     .split(' ')
                     .join('-')
                     .toLowerCase()
                 const movieIndex = String(index + 1)
-                return <Movie key={movie.id}>
-                    <Link to={`/movie/${movie.id}/${MovieUrl}`}>{movieIndex}. {movie.title}</Link>
-                    {this.props.signedIn
-                        ? <IconContainer>
-                                {movie.favorite
-                                    ? <Icon
-                                            onClick={() => this.removeMovieFromFavorites(movie.favorite_id, movie.id, movie.likes)}
-                                            src='../../../icons/SVG/star-full.svg'
-                                            alt='In your Favorites'/>
-                                    : <Icon
-                                        onClick={() => this.handleMovieFavorite(movie.id, movie.likes)}
-                                        src='../../../icons/SVG/star-empty.svg'
-                                        alt='favorite'/>}
-                                {movie.in_watchlist
-                                    ? <Icon
-                                            onClick={() => this.removeMovieFromWatchList(movie.watchlist_movie_id)}
-                                            src='../../../icons/SVG/clipboard.svg'
-                                            alt='In your WatchList'/>
-                                    : <Icon
-                                        onClick={() => this.handleMovieWatchList(movie.id)}
-                                        src='../../../icons/SVG/list.svg'
-                                        alt='Add to WatchList'/>}
-                            </IconContainer>
-                        : ''}
-                </Movie>
+                return <TopMovie
+                key={movie.id} 
+                movie={movie} 
+                movieIndex={movieIndex} 
+                MovieUrl={MovieUrl}
+                handleMovieFavorite={this.handleMovieFavorite}
+                handleMovieWatchList={this.handleMovieWatchList}
+                removeMovieFromFavorites={this.removeMovieFromFavorites}
+                removeMovieFromWatchList={this.removeMovieFromWatchList}
+                signedIn={this.props.signedIn} />
             })
 
         const recentReviews = this
@@ -368,33 +292,9 @@ class MainPage extends Component {
             })
 
         const HeroBanner = <Cage>
-            {/* <img src='../../../Logo_white.png' alt='caged movies' /> */}
             For those movies, so bad you hate to love them!
         </Cage>
 
-        const UserInfo = <UserContainer>
-            <img src={this.props.userInfo.image} alt={this.props.userInfo.name}/>
-            <div>
-                <h2>{this.props.userInfo.name}</h2>
-                <hr/>
-                <h4>{this.props.userInfo.nickname}</h4>
-                <UserContent>
-                    <ContentButton onClick={this.showFavoriteMovies}>
-                        {this.state.toggleUserFavorites
-                            ? "Return"
-                            : "Favorites"}
-                    </ContentButton>
-                    <ContentButton onClick={this.showWatchList}>
-                        {this.state.toggleUserWatchList
-                            ? "Return"
-                            : "Watch List"}</ContentButton>
-                    <ContentButton onClick={this.showReviews}>
-                        {this.state.toggleUserReviews
-                            ? "Return"
-                            : "Reviews"}</ContentButton>
-                </UserContent>
-            </div>
-        </UserContainer>
         const mainContents = <MainContents>
             <TopMovies>
                 <h3>Top Movies:</h3>
@@ -404,21 +304,11 @@ class MainPage extends Component {
                 <h3>Recent Reviews:</h3>
                 {recentReviews}
             </RecentPosts>
-            <RandomMovie>
-                <div>
-                    <Link to={`/movie/${this.state.randomMovie.id}/${randomMovieUrl}`}>
-                        <h3>{this.state.randomMovie.title}</h3>
-                        <RandomInfo>
-                            <img src={this.state.randomMovie.poster} alt={this.state.randomMovie.title}/>
-                            <div>
-                                <p>{this.state.randomMovie.tag_line}</p>
-                                <p>Rating: {this.state.randomMovie.rating}/10</p>
-                                <p>Plot: {this.state.randomMovie.plot}</p>
-                            </div>
-                        </RandomInfo>
-                    </Link>
-                </div>
-            </RandomMovie>
+
+            <RandomMovie 
+            randomMovie={this.state.randomMovie} 
+            randomMovieUrl={randomMovieUrl} />
+
             <TopPost>
                 <h3>Top Reviews:</h3>
                 {TopReviews}
@@ -428,7 +318,13 @@ class MainPage extends Component {
             <div>
                 <HeroUserContainer>
                     {this.props.signedIn
-                        ? UserInfo
+                        ? <UserInfo userInfo={this.props.userInfo}
+                        showFavoriteMovies={this.showFavoriteMovies}
+                        toggleUserFavorites={this.state.toggleUserFavorites}
+                        showWatchList={this.showWatchList}
+                        toggleUserWatchList={this.state.toggleUserWatchList}
+                        showReviews={this.showReviews}
+                        toggleUserReviews={this.state.toggleUserReviews}/>
                         : HeroBanner}
                 </HeroUserContainer>
 

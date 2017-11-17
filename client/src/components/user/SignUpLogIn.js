@@ -7,7 +7,10 @@ import { FlexRowCenter } from '../StyledComponents/FlexContainers'
 
 const SignInButton = Button.extend `
     background: #CF6766;
-    color: #031424;    
+    color: #031424;
+    @media (max-width: 600px) {
+        order: 1;
+    }    
 `
 
 const UserPortal = styled.div`
@@ -26,6 +29,14 @@ const NewUserContainer = FlexRowCenter.extend`
         justify-content: center;
         width: 50%;
     }
+    @media (max-width: 600px) {
+            flex-direction: column;
+            width: 100%;
+            form{
+            order: 2;
+            width: 100%;
+        }
+    }
 `
 const ReturnUserContainer = FlexRowCenter.extend`
 form {
@@ -33,6 +44,7 @@ form {
     align-items: center;
     flex-direction: column;
     width: 50%;
+    margin: 5px;
 }
 div{
     display: flex;
@@ -40,6 +52,17 @@ div{
     justify-content: center;
     width: 50%;
 }
+@media (max-width: 600px) {
+        flex-direction: column;
+        width: auto;
+        form{
+            order: 2;
+            width: 100%;
+            div {
+                width: 100%;
+            }
+        }
+    }
 `
 
 class SignUpLogIn extends Component {

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 
-import { FlexRow, FlexRowBetween } from '../StyledComponents/FlexContainers'
+import { FlexRow } from '../StyledComponents/FlexContainers'
 import MovieComments from '../Comments/MovieComments'
 import MovieReviews from '../Review/MovieReviews'
 
@@ -153,7 +153,7 @@ class MoviePage extends Component {
     //Allow user to remove movie to their watchlist
     removeMovieFromWatchList = async() => {
         const watchlistId = this.state.favorite.watchlist_id
-        const res= await axios.delete(`/api/watch_list_movies/${watchlistId}`)
+        await axios.delete(`/api/watch_list_movies/${watchlistId}`)
         const favorite = {...this.state.favorite}
         favorite.in_watchlist = false
         favorite.watchlist_id = null

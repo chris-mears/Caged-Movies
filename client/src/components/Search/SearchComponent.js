@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import styled from 'styled-components'
 import axios from 'axios'
-import { Link, Redirect } from 'react-router-dom'
-import {FlexRow, FlexRowCenter, FlexColumn, FlexRowBetween} from '../StyledComponents/FlexContainers'
-import {Button} from '../StyledComponents/Button'
+import { Link } from 'react-router-dom'
+import {FlexRow, FlexRowBetween} from '../StyledComponents/FlexContainers'
 import ApiMovie from '../Movie/ApiMovie'
 
 import FullScreenSearch from './FullScreenSearch'
@@ -49,26 +48,6 @@ height: 50px;
 @media (max-width: 600px) {
     marign: 5px;
     height: 25px;
-}
-`
-
-const AddIcon = styled.img `
-margin: 0 20px 0 40px;
-height: 50px;
-@media (max-width: 600px) {
-    margin: 5px;
-}
-`
-
-const ActiveIcon = Icon.extend `
-height: 25px;
-`
-
-const CancelIcon = Icon.extend `
-height: 25px;
-margin-right: 100px;
-@media (max-width: 600px) {
-    margin-right: 10px;
 }
 `
 
@@ -274,13 +253,13 @@ class SearchComponent extends Component {
         const payload = {
             movie_id: movieId
         }
-        const res = await axios.post('/api/watch_list_movies', payload)
+        await axios.post('/api/watch_list_movies', payload)
         this.handleSearch()
     }
 
     //allows user to remove movie from watchlist
     removeMovieFromWatchList = async(watchlistId) => {
-        const res= await axios.delete(`/api/watch_list_movies/${watchlistId}`)
+        await axios.delete(`/api/watch_list_movies/${watchlistId}`)
         this.handleSearch()
     }
 
@@ -331,11 +310,6 @@ class SearchComponent extends Component {
         if (this.state.apiResults.length !== 0) {
             apiMovies = <div><h3>TMDB Movies:</h3>
             <div>{this.state.apiResults.map((movie)=> {
-                const MovieUrl = movie.title
-                .replace(/[&/\\#,+()$~%.'":*?<>{}]/g, '')
-                .split(' ')
-                .join('-')
-                .toLowerCase()
                 return (
                     <ApiMovie key={movie.id} title={movie.title}
                     movieId={movie.id}

@@ -33,7 +33,7 @@ class FavoriteMovies extends Component {
                     .map((movie) => {
                         const MovieUrl = movie
                         .title
-                        .replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, '')
+                        .replace(/[&/\\#,+()$~%.'":*?<>{}]/g, '')
                         .split(' ')
                         .join('-')
                         .toLowerCase()

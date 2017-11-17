@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components'
 import { Button } from '../StyledComponents/Button'
-import {FlexRow, FlexRowCenter, FlexColumn, FlexRowBetween} from '../StyledComponents/FlexContainers'
+import {FlexRow, FlexColumn} from '../StyledComponents/FlexContainers'
 
 
 const SearchDiv = FlexRow.extend `

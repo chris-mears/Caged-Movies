@@ -53,7 +53,6 @@ class App extends Component {
         const emailhash = md5(email)
         try {
             const image = `https://www.gravatar.com/avatar/${emailhash}.jpg?s=300`
-            console.log(image)
             const payload = {
                 email: email,
                 password: password,

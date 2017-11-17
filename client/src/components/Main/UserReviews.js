@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom'
-import styled from 'styled-components'
 import {FlexColumnCenter, FlexRow} from '../StyledComponents/FlexContainers'
 
 const ReviewsContainer = FlexColumnCenter.extend `

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios'
 import styled from 'styled-components'
 import { Redirect } from 'react-router-dom'
-import { FlexRow, FlexRowCenter } from '../StyledComponents/FlexContainers'
+import { FlexRowCenter } from '../StyledComponents/FlexContainers'
 import { ReviewForm, UpperForm, TitleInput, BodyField, SubmitButton} from '../StyledComponents/ReviewForms.js'
 
 

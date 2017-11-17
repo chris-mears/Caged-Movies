@@ -2,9 +2,8 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom'
 import axios from 'axios'
 import styled from 'styled-components'
-import {FlexRowCenter, FlexRowBetween, FlexRow} from '../StyledComponents/FlexContainers'
-import {Button} from '../StyledComponents/Button'
-import {Icon} from '../StyledComponents/Icon'
+import {FlexRowCenter} from '../StyledComponents/FlexContainers'
+
 
 import FavoriteMovies from './FavoriteMovies'
 import WatchList from './WatchList'
@@ -79,17 +78,6 @@ const TopPost = styled.div `
     }
 `
 
-const Movie = FlexRowBetween.extend `
-    border: 1px solid #30415D;
-    padding: 10px;
-    font-size: 1.2em;
-    a {
-        font-size: 1.4em;
-        color: #30415D;
-        text-decoration: none;
-    }
-`
-
 const Review = styled.div `
 border: 1px solid #30415D;
 padding: 10px;
@@ -113,8 +101,6 @@ const Cage = FlexRowCenter.extend `
     img {
         height: 80%;
     }
-`
-const IconContainer = FlexRowCenter.extend `
 `
 
 const ContentsContainer = styled.div ``
@@ -190,13 +176,13 @@ class MainPage extends Component {
         const payload = {
             movie_id: movieId
         }
-        const res = await axios.post('/api/watch_list_movies', payload)
+        await axios.post('/api/watch_list_movies', payload)
         this.getMovies()
     }
 
     //allows user to remove movie from watchlist
     removeMovieFromWatchList = async(watchlistId) => {
-        const res = await axios.delete(`/api/watch_list_movies/${watchlistId}`)
+        await axios.delete(`/api/watch_list_movies/${watchlistId}`)
         this.getMovies()
     }
 

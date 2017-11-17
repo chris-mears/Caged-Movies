@@ -21,12 +21,19 @@ padding: 10px 30px;
 p {
     margin: 0;
 }
+@media (max-width: 500px) {
+    font-size: 1em;
+    margin: 5px;
+}
 `
 
 const Avatar = styled.img `
     height: 40px;
     border-radius: 20px;
     margin-right: 40px;
+    @media (max-width: 500px) {
+        margin-right: 10px;
+    }
 `
 const BodyField = styled.textarea `
 width: 93vw;
@@ -34,6 +41,10 @@ height: 12vh;
 font-size: 1.4em;
 border: 2px solid #30415D;
 margin: 20px;
+@media (max-width: 500px) {
+    width: 80vw;
+
+}
 `
 const BodyUpdateField = styled.textarea `
 width: 70vw;
@@ -41,9 +52,16 @@ height: 12vh;
 font-size: 1.2em;
 border: 2px solid #30415D;
 margin: 20px;
+@media (max-width: 500px) {
+    width: 50vw;
+    heigth: 18vh;
+}
 `
 const Icon = styled.img `
 margin: 0 20px;
+@media (max-width: 500px) {
+    margin: 0 5px;
+}
 `
 const AddButton = Button.extend`
   background: #CF6766;

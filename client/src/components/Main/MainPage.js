@@ -13,7 +13,7 @@ const HeroUserContainer = FlexRowCenter.extend `
     padding-top:80px;
     width: 100%;
     height: 35vh;
-    min-height: 250px;
+    min-height: 350px;
     color: #cf6766;
     background: #30415D;
 `
@@ -27,7 +27,6 @@ const WelcomeContainer = styled.div `
 `
 const MainContents = FlexRowCenter.extend `
     flex-wrap: wrap;
-    
 `
 
 const TopMovies = styled.div `
@@ -38,7 +37,11 @@ const TopMovies = styled.div `
     h3 {
         text-align: center;
     }
-    
+    @media (max-width: 850px) {
+        margin: 5px;
+        padding: 5px;
+        width: auto;
+    }
 `
 
 const RecentPosts = styled.div `
@@ -48,6 +51,11 @@ const RecentPosts = styled.div `
     width: 40vw;
     h3 {
         text-align: center;
+    }
+    @media (max-width: 850px) {
+        margin: 5px;
+        padding: 5px;
+        width: auto;
     }
 `
 const RandomMovie = styled.div `
@@ -72,6 +80,11 @@ const RandomMovie = styled.div `
             text-decoration: none;
         }
     }
+    @media (max-width: 850px) {
+        margin: 5px;
+        padding: 5px;
+        width: auto;
+    }
 `
 const RandomInfo = FlexRow.extend `
     p {
@@ -86,6 +99,11 @@ const TopPost = styled.div `
     width: 40vw;
     h3 {
         text-align: center;
+    }
+    @media (max-width: 850px) {
+        margin: 5px;
+        padding: 5px;
+        width: auto;
     }
 `
 
@@ -139,6 +157,18 @@ const UserContainer = FlexRowCenter.extend `
     div{
         width: 70vw;
         margin-left: 10px;
+    }
+    @media (max-width: 750px) {
+        flex-direction: column;
+        width: auto;
+        img{
+            height: 150px;
+            border-radius: 75px;
+        }
+        div{
+            width: auto;
+            margin-left: 5px;
+        }
     }
 `
 

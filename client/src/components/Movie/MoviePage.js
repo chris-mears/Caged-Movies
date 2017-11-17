@@ -13,11 +13,20 @@ width: 100%;
 height:50vh;
 color: white;
 background: #30415D;
-img {
-    height: 90%;
-    margin: 10px 40px;
+
+@media (max-width: 500px) {
+    flex-direction: column;
+    height: auto;
 }
 `
+const Poster = styled.img`
+    height: 90%;
+    margin: 10px 40px;
+@media (max-width: 500px) {
+    height: 200px;
+}
+`
+
 const Info = styled.div`
     width: 75%;
     font-size: 1.2em;
@@ -30,6 +39,9 @@ const Info = styled.div`
 `
 const ReviewList = styled.div`
     margin: 20px;
+    @media (max-width: 500px) {
+        margin: 5px
+    }
 `
 
 
@@ -41,18 +53,34 @@ const Review = FlexRowBetween.extend`
     a {
         color: black;
     }
+    @media (max-width: 500px) {
+        font-size: 1em;
+        margin: 5px;
+    }
 `
 
-const AddReview = styled.div`
-    font-size: 2em;
+const AddIcon = styled.img`
+    margin: 20px;
+@media (max-width: 500px) {
+    height: 25px;   
+}
 `
 const Icon = styled.img`
     margin: 20px;
+@media (max-width: 500px) {
+    height: 25px; 
+    margin: 5px;  
+}
 `
 const UserOptions = FlexRow.extend`
     h5 {
         margin: 10px 40px;
     }
+    @media (max-width: 500px) {
+       h5{ 
+        margin: 5px;
+       }
+    }      
 `
 
 class MoviePage extends Component {
@@ -155,7 +183,7 @@ class MoviePage extends Component {
         return (
             <div>
                 <MovieInfo>
-                    <img src={this.state.movie.poster} alt={this.state.movie.title} />
+                    <Poster src={this.state.movie.poster} alt={this.state.movie.title} />
                     <Info>
                         <div><h1>{this.state.movie.title}</h1></div>
                         <div><p>{this.state.movie.tag_line}</p></div>
@@ -163,7 +191,7 @@ class MoviePage extends Component {
                         <div><h5>Overview</h5><p>{this.state.movie.plot}</p></div>
                     </Info>
                     {this.props.signedIn ? 
-                    <Link to={{ pathname: '/newReview', state:{id: this.state.movie.id}}}><Icon src='../../../icons/SVG/plus.svg' /></Link> : ''}
+                    <Link to={{ pathname: '/newReview', state:{id: this.state.movie.id}}}><AddIcon src='../../../icons/SVG/plus.svg' /></Link> : ''}
                 </MovieInfo>
                 {this.props.signedIn ?
                 <UserOptions>

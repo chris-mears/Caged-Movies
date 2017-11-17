@@ -9,6 +9,9 @@ margin: 10px 0;
 h4, p {
     margin: 5px;
 }
+@media (max-width: 600px) {
+    flex-direction: column;
+}
 `
 const Poster = styled.img`
     height: 80px;
@@ -19,9 +22,13 @@ const ActivePoster = Poster.extend`
     margin-right: 15px;
 `
 
-const Icon = styled.img `
-margin: 0 10px 0 40px;
-height: 20px;
+const AddIcon = styled.img `
+margin: 0 20px 0 40px;
+height: 40px;
+@media (max-width: 600px) {
+    wargin: 10px;
+    height: 25px;
+}
 `
 
 class ApiMovie extends Component {
@@ -77,7 +84,7 @@ class ApiMovie extends Component {
                     </div>
                     {this.state.toggleMore && this.props.signedIn ?
                     <div>
-                        <Icon onClick={this.saveMovie} src='../../../icons/SVG/plus.svg' alt='Add Movie' />
+                        <AddIcon onClick={this.saveMovie} src='../../../icons/SVG/plus.svg' alt='Add Movie' />
                     </div>
                     : ''}
 

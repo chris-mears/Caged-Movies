@@ -18,6 +18,14 @@ img {
     height: 90%;
     margin: 10px 40px;
 }
+@media (max-width: 500px) {
+    flex-direction: column;
+    height: auto;
+    img {
+        height: 200px;
+        margin: 2px;
+    }
+}
 `
 const Info = styled.div`
     width: 75%;
@@ -30,6 +38,15 @@ const Info = styled.div`
     }
     p {
         font-size: .8em;
+    }
+    @media (max-width: 500px) {
+        h1 {
+            margin: 5px;
+            font-size: 1.4em;
+        }
+        p{
+            margin: 5px;
+        }
     }
 `
 
@@ -48,6 +65,9 @@ const ReviewBody = styled.div`
     padding: 20px;
     p {
         font-size: 1.4em;
+    }
+    @media (max-width: 500px) {
+        margin: 10px;
     }
 `
 const ReviewOptions = FlexRow.extend`

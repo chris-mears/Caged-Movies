@@ -23,6 +23,9 @@ const HeaderButton = Button.extend `
 
 const Username = styled.p`
     color: white;
+    @media (max-width: 380px) {
+        display: none;
+    }
 `
 
 const Logo = styled.div `
@@ -45,6 +48,20 @@ const Logo = styled.div `
         height: 50px;
     }
     }
+    @media (max-width: 500px) {
+        font-weight: bolder;
+    margin-left: 10px;
+    a {
+        p {
+            margin: 10px 0 2px 2px;
+            font-size: .8em;
+            color: white;
+        }
+        img {
+        height: 25px;
+    }
+    }
+
 `
 const SignIn = FlexRowCenter.extend``
 

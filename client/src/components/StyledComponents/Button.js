@@ -19,4 +19,15 @@ export const Button = styled.button `
     &:hover {
         background: rgb(198, 165, 103);
     }
+    @media (max-width: 850px) {
+        letter-spacing: .1em;
+        font-size: .5rem;
+        border: none;
+        margin: 2px;
+        border-radius: 2px;
+        height: 26px;
+        line-height: 26px;
+        padding: 0 .2rem;
+        min-width: 60px;
+    }
 `

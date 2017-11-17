@@ -39,11 +39,34 @@ const ActiveSearch = Search.extend `
     font-size: 1.6em;
     :focus{
     outline: none;
-}
+    @media (max-width: 600px) {
+        font-size: .8em
+    }
+
 `
 const Icon = styled.img `
 margin: 0 10px 0 40px;
 height: 20px;
+@media (max-width: 600px) {
+    margin: 5px;
+}
+`
+
+const OptionIcon = styled.img `
+margin: 20px;
+height: 50px;
+@media (max-width: 600px) {
+    marign: 5px;
+    height: 25px;
+}
+`
+
+const AddIcon = styled.img `
+margin: 0 20px 0 40px;
+height: 50px;
+@media (max-width: 600px) {
+    margin: 5px;
+}
 `
 
 const ActiveIcon = Icon.extend `
@@ -53,6 +76,9 @@ height: 25px;
 const CancelIcon = Icon.extend `
 height: 25px;
 margin-right: 100px;
+@media (max-width: 600px) {
+    margin-right: 10px;
+}
 `
 
 const FullScreen = styled.div `
@@ -80,6 +106,13 @@ const SearchResults = styled.div `
     border: 3px solid #30415D;
     padding: 15px;
     min-height: 85vh;
+    @media (max-width: 600px) {
+    flex-direction: column;
+    width: auto;
+    height: auto;
+    margin: 5px;
+    padding: 5px;
+}
 `
 
 const SearchOptions = FlexColumn.extend`
@@ -89,6 +122,14 @@ const SearchOptions = FlexColumn.extend`
     margin-right: 40px;
     height: 80vh;
     width: 20vw;
+    @media (max-width: 600px) {
+        flex-direction: row;
+        width: auto;
+        height: auto;
+        align-items: center;
+        justify-content: center;
+        margin: 10px 5px;
+    }
 `
 
 const ResultsContainer = styled.div`
@@ -97,18 +138,26 @@ const ResultsContainer = styled.div`
     min-height: 85vh;
     color: white;
     width: 75vw;
+    @media (max-width: 600px) {
+        width: auto;
+        margin: 5px;
+    }
 `
 const Movie = FlexRowBetween.extend`
     border: 1px solid white;
     margin: 10px 0;
-    img {
-        height: 80px;
-        margin-right: 10px;
-    }
     h4, p {
         margin: 5px;
     }
+    @media (max-width: 600px) {
+        flex-direction: column;
+    }
 `
+const Poster = styled.img `
+    height: 80px;
+    margin-right: 10px;
+`
+        
 
 const Review = styled.div`
     border: 1px solid white;
@@ -312,7 +361,7 @@ class SearchComponent extends Component {
                 return (
                     <Movie key={movie.id}>
                     <MovieInfo>
-                    <img src={movie.poster} alt={movie.title} />
+                    <Poster src={movie.poster} alt={movie.title} />
                     <div>
                         <h4><Link to={`/movie/${movie.id}/${MovieUrl}`} onClick={this.handleCancel}>{movie.title}</Link></h4>
                         <p>{movie.tag_line}</p>
@@ -321,11 +370,11 @@ class SearchComponent extends Component {
                     {this.props.signedIn ?
                     <UserOptions>
                     {movie.favorite ? 
-                        <Icon onClick={() => this.removeMovieFromFavorites(movie.favorite_id, movie.id, movie.likes)} src='../../../icons/SVG/star-full.svg' alt='In your Favorites' /> : 
-                        <Icon onClick={() => this.handleMovieFavorite(movie.id, movie.likes)} src='../../../icons/SVG/star-empty.svg' alt='favorite' />}
+                        <OptionIcon onClick={() => this.removeMovieFromFavorites(movie.favorite_id, movie.id, movie.likes)} src='../../../icons/SVG/star-full-white.svg' alt='In your Favorites' /> : 
+                        <OptionIcon onClick={() => this.handleMovieFavorite(movie.id, movie.likes)} src='../../../icons/SVG/star-empty-white.svg' alt='favorite' />}
                     {movie.in_watchlist ? 
-                        <Icon onClick={() => this.removeMovieFromWatchList(movie.watchlist_movie_id)} src='../../../icons/SVG/clipboard.svg' alt='In your WatchList' /> : 
-                        <Icon onClick={() => this.handleMovieWatchList(movie.id)} src='../../../icons/SVG/list.svg' alt='Add to WatchList' />}
+                        <OptionIcon onClick={() => this.removeMovieFromWatchList(movie.watchlist_movie_id)} src='../../../icons/SVG/clipboard-white.svg' alt='In your WatchList' /> : 
+                        <OptionIcon onClick={() => this.handleMovieWatchList(movie.id)} src='../../../icons/SVG/list-white.svg' alt='Add to WatchList' />}
                     </UserOptions>
                     : ''}
                     </Movie>

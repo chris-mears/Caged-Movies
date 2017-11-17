@@ -11,6 +11,7 @@ const MovieInfo = FlexRow.extend `
 padding-top: 80px;
 width: 100%;
 height:50vh;
+min-height: 275px;
 color: white;
 background: #30415D;
 

@@ -14,7 +14,17 @@ const ReviewForm = styled.form`
 const UpperForm = FlexRow.extend`
     img {
         height: 30vh;
-        margin-left: 15vw; 
+        margin-left: 15vw;
+    }
+    @media (max-width: 600px) {
+        flex-direction: column;
+        width: auto;
+        img {
+            order: 1; 
+        }
+        div {
+            order: 2
+        }
     }
 `
 
@@ -24,7 +34,12 @@ const TitleInput = styled.input`
     font-size: 2em;
     border: none;
     border-bottom: 2px solid #30415D;
-    margin: 20px
+    margin: 20px;
+    @media (max-width: 600px) {
+       width: auto;
+       margin: 5px; 
+       font-size: 1em;
+    }
 `
 
 const BodyField = styled.textarea`
@@ -32,7 +47,11 @@ const BodyField = styled.textarea`
     height: 40vh;
     font-size: 1.6em;
     border: 2px solid #30415D;
-    margin: 20px
+    margin: 20px;
+    @media (max-width: 600px) {
+       margin: 5px;
+       font-size: 1em; 
+    }
 `
 
 const SubmitButton = styled.input`

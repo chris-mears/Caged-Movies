@@ -184,9 +184,9 @@ const Title = styled.div`
 
 const MovieInfo = FlexRow.extend`
     div {
-        /* p {
-            max-width: 800px;
-        } */
+        p {
+            max-width: 550px;
+        }
         h4 {
             a {
                 color: white;

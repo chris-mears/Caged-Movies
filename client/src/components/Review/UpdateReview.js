@@ -71,12 +71,12 @@ class UpdateReview extends Component {
                 <ReviewForm onSubmit={this.handleSubmit}>
                 <UpperForm>
                 <div>
-                <TitleInput name='title' value={this.state.review.title} onChange={this.handleChange} />
+                <TitleInput name='title' value={this.state.review.title} onChange={this.handleChange} required />
                 <h3>Movie: {this.state.review.movie.title}</h3>
                 </div>
                 <img src={this.state.review.movie.poster} alt={this.state.review.movie.title} />
                 </UpperForm>
-                <BodyField name='body' value={this.state.review.body} onChange={this.handleChange} />
+                <BodyField name='body' value={this.state.review.body} onChange={this.handleChange} required />
                 <ButtonContainer>
                 <SubmitButton type='submit' />
                 </ButtonContainer>

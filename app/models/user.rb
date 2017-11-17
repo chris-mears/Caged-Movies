@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
          :omniauthable
   include DeviseTokenAuth::Concerns::User
 
+  validates :nickname, presence: true
+
   has_many :reviews, dependent: :destroy
   has_many :favorite_movies, dependent: :destroy
   has_many :favorites, through: :favorite_movies, source: :movie

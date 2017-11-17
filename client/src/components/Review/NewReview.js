@@ -58,7 +58,6 @@ class NewReview extends Component {
         }
         try {
             const res = await axios.post('/api/reviews', payload)
-            console.log(res)
             this.setState({reviewId: res.data.id, toggleRedirect: true})
         } catch(err) {
             console.log(err)
@@ -76,12 +75,12 @@ class NewReview extends Component {
                 <ReviewForm onSubmit={this.handleSubmit}>
                 <UpperForm>
                 <div>
-                <TitleInput name='title' placeholder="Title" value={this.state.newReview.title} onChange={this.handleChange} />
+                <TitleInput name='title' placeholder="Title" value={this.state.newReview.title} onChange={this.handleChange} required />
                 <h3>Movie: {this.state.movie.title}</h3>
                 </div>
                 <img src={this.state.movie.poster} alt={this.state.movie.title} />
                 </UpperForm>
-                <BodyField name='body' placeholder='Your Review' value={this.state.newReview.body} onChange={this.handleChange} />
+                <BodyField name='body' placeholder='Your Review' value={this.state.newReview.body} onChange={this.handleChange} required />
                 <ButtonContainer>
                 <SubmitButton type='submit' />
                 </ButtonContainer>

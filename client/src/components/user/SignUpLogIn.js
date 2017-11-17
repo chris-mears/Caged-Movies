@@ -88,19 +88,19 @@ class SignUpLogIn extends Component {
         } 
 
         const newUser = <NewUserContainer>
-        <form>
+        <form onSubmit={this.signUp}>
         <div>
             <label htmlFor="email">E-mail: </label>
-            <input onChange={this.handleChange} type="text" name="email" value={this.state.email}/>
+            <input onChange={this.handleChange} type="text" name="email" value={this.state.email} required/>
         </div>
         <div>
             <label htmlFor="password">Password: </label>
-            <input onChange={this.handleChange} type="password" name="password" value={this.state.password}/>
+            <input onChange={this.handleChange} type="password" name="password" value={this.state.password} required/>
         </div>
         <div>
             <label htmlFor="password_confirmation">Confirm Password: </label>
             <input onChange={this.handleChange} type="password" name="password_confirmation"
-                   value={this.state.password_confirmation}/>
+                   value={this.state.password_confirmation} required />
         </div>
         <div>
             <label htmlFor="name">Name: </label>
@@ -110,25 +110,25 @@ class SignUpLogIn extends Component {
         <div>
             <label htmlFor="username">Username: </label>
             <input onChange={this.handleChange} type="text" name="nickname"
-                   value={this.state.nickname}/>
+                   value={this.state.nickname} required />
         </div>
 
-        <SignInButton onClick={this.signUp}>Sign Up</SignInButton>
+        <SignInButton>Sign Up</SignInButton>
     </form>
     <div><SignInButton onClick={this.handleToggle}>Login</SignInButton></div>
     </NewUserContainer>
     const returningUser = <ReturnUserContainer>
         <div><SignInButton onClick={this.handleToggle}>Sign Up</SignInButton> </div>
-        <form>
+        <form onSubmit={this.signIn}>
     <div>
         <label htmlFor="email">E-mail: </label>
-        <input onChange={this.handleChange} type="text" name="email" value={this.state.email}/>
+        <input onChange={this.handleChange} type="text" name="email" value={this.state.email} required />
     </div>
     <div>
         <label htmlFor="password">Password: </label>
-        <input onChange={this.handleChange} type="password" name="password" value={this.state.password}/>
+        <input onChange={this.handleChange} type="password" name="password" value={this.state.password} required />
     </div>
-    <SignInButton onClick={this.signIn}>Log In</SignInButton>
+    <SignInButton>Log In</SignInButton>
 </form>
 </ReturnUserContainer>
 

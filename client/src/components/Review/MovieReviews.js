@@ -29,7 +29,7 @@ margin: 5px;
 const MovieReviews = (props) => {
     return (
             <Review>
-                <Link to={`/props.review/${props.review.id}`}>
+                <Link to={`/review/${props.review.id}`}>
                 {props.review.title}</Link><div>
                 {props.review.belongs_to_user ? 
                 <div>

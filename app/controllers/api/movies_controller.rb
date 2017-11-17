@@ -1,7 +1,8 @@
 class Api::MoviesController < ApplicationController
   before_action :authenticate_user!, :except => [:index, :show, :search, :random]
 
-  #Index method for Movies
+  #method to get all the movies for the main page. Eventually need to refactor to limit number coming back
+  #also formats movie to indicate if they are aprt of the users favorites or watch list
   def index
     @user = current_user
     if @user != nil
@@ -36,6 +37,9 @@ class Api::MoviesController < ApplicationController
     render json: @results
   end
 
+  #method to search movies by their title or by their genre
+  #also formats movie to indicate if they are aprt of the users favorites or watch list
+  #also has some search logic. User needs to type more than three characters before it will search the db
   def search
     @user = current_user
     if @user != nil
@@ -49,9 +53,8 @@ class Api::MoviesController < ApplicationController
         render json: {msg: 'Please enter more than three Characters'}
       else
         @movies = Movie.includes(:reviews).where("title ILIKE ?", "%#{params[:title]}%")
-        @reviews = []
-        @movies.each do |movie|
-          @reviews << movie.reviews
+        @reviews = @movies.map do |movie|
+          movie.reviews
         end
         @results = []
         @movies.each do |movie|
@@ -123,20 +126,22 @@ class Api::MoviesController < ApplicationController
     end
   end
 
+  #method to show an individual movie
+  #Also grabs reviews and comments for that movie to dsiplay on the movie page in app
+  #Also formats review and comments to indicate if they belong to current user
+  #and checks to see if the movie is apart of the users favorites or watch list
   def show
     @user = current_user
     @movie = Movie
       .left_joins(:reviews).includes(:reviews)
       .left_joins(:movie_comments).includes(:movie_comments)
       .find_by_id(params[:id])
-    @reviews = []
-    @movie.reviews.each do |review|
-      hash = {
+    @reviews = @movie.reviews.map do |review|
+      {
         title: review.title,
         id: review.id,
         belongs_to_user: review.user == @user
       }
-      @reviews << hash
     end
     @comments = @movie.movie_comments.map do |comment|
       if @user != nil
@@ -185,6 +190,7 @@ class Api::MoviesController < ApplicationController
     render json: {movie: @movie, reviews: @reviews, favorite: result, comments: @comments }
   end
 
+  #grabs a random movie from the db for the main page
   def random
     @movies = Movie.all
     movies = @movies.map do |movie|
@@ -204,6 +210,8 @@ class Api::MoviesController < ApplicationController
     render json: @movie
   end
 
+  #allows a movie to be updated.
+  #Using this with users favorites so the movie's likes count will go up when added to a users favorites and down when removed
   def update
     @user = current_user
     @movie = Movie.find_by_id(params[:id])
@@ -211,6 +219,7 @@ class Api::MoviesController < ApplicationController
     render json: @movie
   end
 
+  #Allows a movie to be created in db. This is used with the api so when a user finds a movie they like from tmdb it can be saved to the app's db
   def create
     @movie = Movie.create!(movie_params)
     render json: @movie

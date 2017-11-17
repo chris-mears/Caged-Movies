@@ -1,4 +1,6 @@
 class Api::ReviewLikesController < ApplicationController
+
+  #allows a user to like a review
   def create
     @user = current_user
     @review_like = @user.review_likes.build(review_like_params)
@@ -7,6 +9,7 @@ class Api::ReviewLikesController < ApplicationController
     end
   end
 
+  #allows a user to unlike a review
   def destroy
     @user = current_user
     @review_like = ReviewLike.find(params[:id]).delete

@@ -2,9 +2,8 @@ class Api::WatchListMoviesController < ApplicationController
   before_action :authenticate_user!
   #   load_and_authorize_resource
 
+  #utilizing this method to pull in the current users watch list of movies
   def index
-    # need user, reviews, favorite movies, and watchlist
-
     @user = User
       .left_joins(:watch_list).includes(:watch_list)
       .find(current_user.id)
@@ -21,6 +20,7 @@ class Api::WatchListMoviesController < ApplicationController
     render json: watch_list
   end
 
+  #This method allows a user to add a movie to their watchlist
   def create
     @user = current_user
     @watch_list_movie = @user.watch_list_movies.build(watchlist_movie_params)
@@ -29,6 +29,7 @@ class Api::WatchListMoviesController < ApplicationController
     end
   end
 
+  #This method allows a user to remove a method from their watchlist
   def destroy
     @user = current_user
     @watch_list_movie = WatchListMovie.find(params[:id]).delete

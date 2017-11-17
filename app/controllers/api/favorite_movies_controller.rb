@@ -2,9 +2,8 @@ class Api::FavoriteMoviesController < ApplicationController
   before_action :authenticate_user!
   load_and_authorize_resource
 
+  #This route will provide all of the favorite movies for the current user
   def index
-    # need user, reviews, favorite movies, and watchlist
-
     @user = User
       .left_joins(:favorites).includes(:favorites)
       .find(current_user.id)
@@ -21,6 +20,7 @@ class Api::FavoriteMoviesController < ApplicationController
     render json: favorite_movies
   end
 
+  #This route will allow a user to add a movie to their favorite movies list
   def create
     @user = current_user
     @favorite_movie = @user.favorite_movies.build(favorite_movie_params)
@@ -29,6 +29,7 @@ class Api::FavoriteMoviesController < ApplicationController
     end
   end
 
+  #This route will allow a user to remove a movie from their favorites list
   def destroy
     @user = current_user
     @FavoriteMovie = FavoriteMovie.find(params[:id]).delete

@@ -35,6 +35,9 @@ class Api::UserController < ApplicationController
     #   watch_list: watch_list
     # }
 
+    #keeping comments above was utilizing this method to bring in more user info but broke it apart to save on some potentially unneeded db calls
+
+    #brings in basic user info when the app is loaded or when a user signs in
     @user = current_user
     user = {
       nickname: @user.nickname,

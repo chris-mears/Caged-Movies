@@ -25,7 +25,7 @@ height: 25px;
 margin: 5px;  
 }
 `
-
+//Compontent to display the reviews on the movie page
 const MovieReviews = (props) => {
     return (
             <Review>

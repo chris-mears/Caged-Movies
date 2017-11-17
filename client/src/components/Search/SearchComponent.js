@@ -142,12 +142,14 @@ class SearchComponent extends Component {
         apiResults: []
     }
 
+    //toggles full screen search component when user click into search bar
     handleClick = () => {
         this.setState({
             toggleSearch: !this.state.toggleSearch
         })
     }
 
+    //exits full screen when user clicks the exit icon
     handleCancel = () => {
         this.setState({
             toggleSearch: !this.state.toggleSearch,
@@ -164,23 +166,27 @@ class SearchComponent extends Component {
         })
     }
 
-
+    //allows user to update the search input
     handleChange = (event) => {
         this.setState({searchInput: event.target.value})
     }
 
+    //allow user to search by movie
     toggleMoviesSearch = () => {
         this.setState({toggleMovies: true, toggleReviews: false, toggleGenre: false})
     }
 
+    //allows user to search by reviews
     toggleReviewsSearch = () => {
         this.setState({toggleMovies: false, toggleReviews: true, toggleGenre: false})
     }
 
+    //allows user to search by genre
     toggleGenreSearch = () => {
         this.setState({toggleMovies: false, toggleReviews: false, toggleGenre: true})
     }
 
+    //function to search db for movies also the api
     searchMovies = async () => {
         const searchInput = this.state.searchInput
         const res = await axios.get(`/api/movies/search?title=${searchInput}`)
@@ -196,6 +202,7 @@ class SearchComponent extends Component {
         }
     }
 
+    //function to search db for reviews
     searchReviews = async () => {
         const searchInput = this.state.searchInput
         const res = await axios.get(`/api/reviews/search?title=${searchInput}`)
@@ -206,6 +213,7 @@ class SearchComponent extends Component {
         }
     }
 
+    //function to search db for movies and reviews based off of genre
     searchGenres = async () => {
         const searchInput = this.state.searchInput
         const res = await axios.get(`/api/movies/search?genre=${searchInput}`)
@@ -217,6 +225,7 @@ class SearchComponent extends Component {
         }
     }
 
+    //middleware function to contain logic for which search function to perform
     handleSearch = () => {
         if (this.state.toggleMovies) {
             this.searchMovies()
@@ -229,6 +238,7 @@ class SearchComponent extends Component {
         }
     }
 
+    //handles the search when the user clicks enter
     handleKeyPress = (event) => {
     if (event.charCode === 13) {
         event.preventDefault()
@@ -236,6 +246,7 @@ class SearchComponent extends Component {
     }
     }
 
+    //allows user to add movie to favorites and updates likes
     handleMovieFavorite = async (movieId, likes) => {
         const payload = {
             movie_id: movieId
@@ -248,6 +259,7 @@ class SearchComponent extends Component {
         this.handleSearch()
     }
 
+    //allows user to remove movie to favorites and updates likes
     removeMovieFromFavorites = async(favoriteId, movieId, likes) => {
         await axios.delete(`/api/favorite_movies/${favoriteId}`)
         const moviePayload = {
@@ -257,6 +269,7 @@ class SearchComponent extends Component {
         this.handleSearch()
     }
 
+    //allows user to add movie to watchlist
     handleMovieWatchList = async (movieId) => {
         const payload = {
             movie_id: movieId
@@ -265,6 +278,7 @@ class SearchComponent extends Component {
         this.handleSearch()
     }
 
+    //allows user to remove movie from watchlist
     removeMovieFromWatchList = async(watchlistId) => {
         const res= await axios.delete(`/api/watch_list_movies/${watchlistId}`)
         this.handleSearch()

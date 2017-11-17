@@ -31,6 +31,7 @@ class UpdateReview extends Component {
         this.getReview()
     }
 
+    //gets review for updating
     getReview= async () => {
             const reviewId = this.props.match.params.reviewId
             console.log(reviewId)
@@ -38,6 +39,7 @@ class UpdateReview extends Component {
             this.setState({review: res.data.review})
         }
 
+    //allows user to update the value in form inputs
     handleChange = (event) => {
         const attribute = event.target.name
         const updatedReview = {...this.state.review}
@@ -45,6 +47,7 @@ class UpdateReview extends Component {
         this.setState({review: updatedReview})
     }
 
+    //save review to db
     handleSubmit = async (event) => {
         event.preventDefault()
         const reviewId = this.props.match.params.reviewId

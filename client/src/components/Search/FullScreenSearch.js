@@ -123,13 +123,14 @@ width: 75vw;
 }
 `
 
-
+//component to dsiplay full screen search 
 class FullScreenSearch extends Component {
-
+    //handles enter for search and pass it to the searchcomponent
     handleEnter = (event) => {
         this.props.handleKeyPress(event)
     }
 
+    //handles input change for search and pass it to the searchcomponent
     handleChange = (event) => {
         this.props.handleChange(event)
     }

@@ -83,16 +83,19 @@ class MoviePage extends Component {
         comments: []
     }
 
+
     componentWillMount() {
         const { movieId } = this.props.match.params
         this.getMovie(movieId)
     }
 
+    //If user is in search and already on movie page and wants to go to a new movie page this will do that
     componentWillReceiveProps(newProps) {
         const { movieId } = newProps.match.params
         this.getMovie(movieId)
     }
 
+    //get movie from db with reviews, comments and if they are apart of the users favorites and watchlist
     getMovie = async (movieId) => {
         try {
             const res = await axios.get(`/api/movies/${movieId}`)
@@ -102,12 +105,14 @@ class MoviePage extends Component {
         }
     }
 
+    //Allows user to delete their reviews from db
     handleReviewDelete = async (reviewId) => {
         await axios.delete(`/api/reviews/${reviewId}`)
         const { movieId } = this.props.match.params
         this.getMovie(movieId)
     }
 
+    //Allow user to add movie to their favorites and updates the movies likes
     handleMovieFavorite = async () => {
         const payload = {
             movie_id: this.state.movie.id
@@ -121,6 +126,7 @@ class MoviePage extends Component {
         this.getMovie(movieId)
     }
 
+     //Allow user to remove movie to their favorites and updates the movies likes
     removeMovieFromFavorites = async() => {
         const favoriteId = this.state.favorite.favorite_id
         await axios.delete(`/api/favorite_movies/${favoriteId}`)
@@ -132,6 +138,7 @@ class MoviePage extends Component {
         this.getMovie(movieId)
     }
 
+     //Allow user to add movie to their watchlist
     handleMovieWatchList = async () => {
         const payload = {
             movie_id: this.state.movie.id
@@ -143,6 +150,7 @@ class MoviePage extends Component {
         this.setState({favorite: favorite})
     }
 
+    //Allow user to remove movie to their watchlist
     removeMovieFromWatchList = async() => {
         const watchlistId = this.state.favorite.watchlist_id
         const res= await axios.delete(`/api/watch_list_movies/${watchlistId}`)

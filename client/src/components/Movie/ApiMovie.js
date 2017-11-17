@@ -38,12 +38,15 @@ class ApiMovie extends Component {
         toggleRedirect: false
     }
 
+    //makes a call to the api to get more info for the movie
     handleMoreInfo = async() => {
         const api_id = this.props.movieId
         const res = await axios.get(`/api/tmdb_movies/${api_id}`)
         this.setState({movie: res.data, toggleMore: !this.state.toggleMore})
     }
 
+
+    //saves the api movie inito the app db
     saveMovie = async(event) => {
         event.preventDefault()
         const payload = {

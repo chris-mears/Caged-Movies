@@ -87,22 +87,26 @@ class ReviewPage extends Component {
         this.getReview(reviewId)
     }
 
+    //allows user to be on a review page and go the another review from the search
     componentWillReceiveProps(newProps) {
         const { reviewId } = newProps.match.params
         this.getReview(reviewId)
     }
 
+    //will grab review info the db also brings in comements also info on if the current user is the author of review
     getReview = async (reviewId) => {
         const res = await axios.get(`/api/reviews/${reviewId}`)
         this.setState({review: res.data.review, comments: res.data.comments})
     }
 
+    //allow user to delete the review if it is their
     handleReviewDelete = async (event) => {
         const reviewId = event.target.id
         await axios.delete(`/api/reviews/${reviewId}`)
         this.setState({toggleRedirect: true})
     }
 
+    //allows user to like the review and update the reviews likes
     handleReviewLike = async () => {
         const payload = {
             review_id: this.state.review.id
@@ -116,6 +120,7 @@ class ReviewPage extends Component {
         this.getReview(reviewId)
     }
 
+    //allows user to unlike a review and update like for review in db
     removeLikeFromReview = async() => {
         const likeId = this.state.review.review_like_id
         await axios.delete(`/api/review_likes/${likeId}`)

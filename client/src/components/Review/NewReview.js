@@ -28,7 +28,7 @@ class NewReview extends Component {
     componentWillMount() {
         this.getMovieIfProvided()
     }
-
+    //grabs movie info for the review
     getMovieIfProvided = async () => {
         if (this.props.location.state !== undefined) {
             const movieId = this.props.location.state.id
@@ -38,7 +38,7 @@ class NewReview extends Component {
         }
             
     }
-
+    //allow user to update the form inputs
     handleChange = (event) => {
         const attribute = event.target.name
         const newReview = {...this.state.newReview}
@@ -46,6 +46,7 @@ class NewReview extends Component {
         this.setState({newReview})
     }
 
+    //saves the review to the db
     handleSubmit = async (event) => {
         event.preventDefault()
         const payload = {

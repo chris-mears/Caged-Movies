@@ -15,6 +15,9 @@ import UpdateReview from './components/Review/UpdateReview'
 import SearchComponent from './components/Search/SearchComponent'
 
 
+//Regex for movie page friendly url came from:
+//https://stackoverflow.com/questions/6555182/remove-all-special-characters-except-space-from-a-string-using-javascript
+
 const TopContents = styled.div`
     width: 100vw;
     position: fixed;

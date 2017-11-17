@@ -67,7 +67,9 @@ class UpdateReview extends Component {
         review: {
             title: '',
             body: '',
-            movie: {}
+            movie: {
+                title: ''
+            }
         },
         toggleRedirect: false,
         reviewId: '',
@@ -81,7 +83,7 @@ class UpdateReview extends Component {
             const reviewId = this.props.match.params.reviewId
             console.log(reviewId)
             const res = await axios.get(`/api/reviews/${reviewId}`)
-            this.setState({review: res.data})
+            this.setState({review: res.data.review})
         }
 
     handleChange = (event) => {

@@ -270,8 +270,7 @@ class SearchComponent extends Component {
         if(res.data.movies === undefined) {
             this.setState({message: res.data.msg})
         } else {
-            const results = {movies: res.data.movies, reviews: res.data.reviews}
-            this.setState({results})
+            this.setState({results: {movies: res.data.movies, reviews: res.data.reviews}})
         }
     }
 
